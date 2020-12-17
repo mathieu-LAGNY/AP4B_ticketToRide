@@ -13,7 +13,7 @@ public class Joueur {
     private ArrayList<Destination> mainDest;
     private ArrayList<Wagon> mainWagon;
 
-    public int totalDestJoueur() {
+    public int totalDesJoueurs() {
         int total = 0;
         for (Destination dest: mainDest) {
             total += dest.getValeur();

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Plateau {
     private ArrayList<Joueur> joueurs;
-    private Deck deckWagon;
-    private Deck deckDestination;
+    private Deck<Wagon> deckWagon;
+    private Deck<Destination> deckDestination;
     private boolean dernierTour;
     private int joueurActuel;
 

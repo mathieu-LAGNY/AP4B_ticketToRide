@@ -1,13 +1,18 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class Deck {
+public class Deck<Carte> {
     private ArrayList<Carte> pioche;
     private ArrayList<Carte> defausse;
 
     public ArrayList<Carte> piocher(int x) {
-        return null;
+        ArrayList<Carte> cartes = new ArrayList<>();
+        if (x>nbCartes()) {
+            remettrePioche();
+        }
+        return cartes;
     }
 
     public int nbCartes() {
@@ -20,6 +25,7 @@ public class Deck {
 
     public void remettrePioche() {
         pioche.addAll(defausse);
+        Collections.shuffle(pioche);
         defausse.clear();
     }
 }
