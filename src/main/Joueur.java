@@ -41,6 +41,30 @@ public class Joueur {
         }
         return total;
     }
+    
+        /**
+     * /!\ La fonction comptage des points  
+     *     elle prend en paramtre le joueur concerné et la route qu'il souhaite occupé 
+     *     compare le nombre de wogon à la longueur de la route 
+     *  */
+    public int comptageDesPoints(Joueur j, Route r, Plateau p) {
+    	int pointJoueur;
+    	int longueurRoute = this.longueur;
+    	ArrayList<Integer> Liste = new ArrayList<>();
+    	Liste.add(0);
+    	Liste.add(1);
+    	Liste.add(2);
+    	Liste.add(4);
+    	Liste.add(7);
+    	Liste.add(10);
+    	Liste.add(15);
+    	if (p.acheterRoute(String a,String b)){
+    		if (Liste.contains(longueurRoute)) {
+    		pointJoueur +=Liste.get(longueurRoute)	
+    	    }
+        return pointJoueur;
+    }
+
 
     /**
      * Exécute le tour d'un joueur
