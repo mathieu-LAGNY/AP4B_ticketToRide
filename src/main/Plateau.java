@@ -10,6 +10,9 @@ public class Plateau {
     private int joueurActuel;
     private int nbManche; // Pour coller avec le theme on envisage manche = semestre
 
+    private ArrayList<Route> listeRoute;
+    private ArrayList<UV> listeUV;
+
     /*
     /!\ Ajouter une méthode pour permettre les saisies :
     - Pour l'action de Pioche
@@ -158,6 +161,11 @@ public class Plateau {
      */
     @Override
     public String toString() {
-        return null;
+        String texte = joueurs.get(joueurActuel) + "\n";
+        texte += "\nPioche\n";
+        for (Wagon wagon: wagonVisible) texte += wagon;
+        texte += "\nRoutes libres\n";
+        for (Route route: listeRoute) texte += route + "\n";
+        return texte;
     }
 }
