@@ -1,9 +1,15 @@
 package main;
 
-public class Wagon extends Carte {
-    private String couleur;
+import java.awt.*;
 
-    public Wagon(String couleur) {
+public class Wagon extends Carte {
+    private Color couleur;
+
+    public Wagon(Color couleur) {
         this.couleur = couleur;
+    }
+
+    public boolean equals(Wagon wagon) {
+        return wagon.couleur == this.couleur;
     }
 }
