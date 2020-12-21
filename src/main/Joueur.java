@@ -47,8 +47,7 @@ public class Joueur {
      *     elle prend en paramtre le joueur concerné et la route qu'il souhaite occupé 
      *     compare le nombre de wogon à la longueur de la route 
      *  */
-    public int comptageDesPoints(Joueur j, Route r, Plateau p) {
-    	int pointJoueur;
+    public void comptageDesPoints(Route r) {
     	int longueurRoute = this.longueur;
     	ArrayList<Integer> Liste = new ArrayList<>();
     	Liste.add(0);
@@ -57,12 +56,11 @@ public class Joueur {
     	Liste.add(4);
     	Liste.add(7);
     	Liste.add(10);
-    	Liste.add(15);
-    	if (p.acheterRoute(String a,String b)){
+    	Liste.add(15);{
     		if (Liste.contains(longueurRoute)) {
-    		pointJoueur +=Liste.get(longueurRoute)	
+    		this.score +=Liste.get(longueurRoute)	
+                this.wagon -= this.longueur
     	    }
-        return pointJoueur;
     }
 
 
