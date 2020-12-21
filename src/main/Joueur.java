@@ -85,6 +85,14 @@ public class Joueur {
      */
     @Override
     public String toString() {
-        return null;
+        String texte = "Joueur : " + this.nomJoueur + " (" + this.couleur + ")\n";
+        texte += this.wagon + " pions wagon, " + this.score + " points\n";
+        texte += "\nMes routes\n";
+        for (Route route: routes) texte += route + "\n";
+        texte += "\nMes cartes destination\n";
+        for (Destination destination: mainDest) texte += destination + "\n";
+        texte += "\nMes cartes wagon\n";
+        for (Wagon wagon: mainWagon) texte += wagon + "\n";
+        return texte;
     }
 }
