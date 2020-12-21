@@ -12,4 +12,9 @@ public class Wagon extends Carte {
     public boolean equals(Wagon wagon) {
         return wagon.couleur == this.couleur;
     }
+
+    @Override
+    public String toString() {
+        return this.couleur.toString();
+    }
 }

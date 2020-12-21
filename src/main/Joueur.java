@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Joueur {
     private String nomJoueur;
     private Color couleur;
-    private int wagon;
+    private int pionWagon;
     private int score;
     private Plateau plateau;
 
@@ -25,7 +25,7 @@ public class Joueur {
         this.nomJoueur = nomJoueur;
         this.plateau = plateau;
         this.couleur = null;
-        this.wagon = 45;
+        this.pionWagon = 45;
         this.score = 0;
         mainWagon = this.plateau.piocherWagon(4);
         mainDest = this.plateau.choisirDest(2);
@@ -86,13 +86,25 @@ public class Joueur {
     @Override
     public String toString() {
         String texte = "Joueur : " + this.nomJoueur + " (" + this.couleur + ")\n";
-        texte += this.wagon + " pions wagon, " + this.score + " points\n";
+        texte += this.pionWagon + " pions wagon, " + this.score + " points\n";
         texte += "\nMes routes\n";
         for (Route route: routes) texte += route + "\n";
         texte += "\nMes cartes destination\n";
         for (Destination destination: mainDest) texte += destination + "\n";
         texte += "\nMes cartes wagon\n";
-        for (Wagon wagon: mainWagon) texte += wagon + "\n";
+        ArrayList<Wagon> wagons = new ArrayList<>();
+        ArrayList<Integer> nbWagons = new ArrayList<>();
+        for (Wagon wagon: mainWagon) {
+            if (!wagons.contains(wagon)) {
+                wagons.add(wagon);
+                nbWagons.add(1);
+            } else {
+                nbWagons.set(wagons.indexOf(wagon),nbWagons.get(wagons.indexOf(wagon))+1);
+            }
+        }
+        for (int i = 0; i < wagons.size(); i++) {
+            texte += wagons.get(i) + " x" + nbWagons.get(i);
+        }
         return texte;
     }
 }
