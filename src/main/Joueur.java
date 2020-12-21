@@ -10,6 +10,7 @@ public class Joueur {
     private int score;
     private Plateau plateau;
 
+    private ArrayList<Route> routes;
     private ArrayList<Destination> mainDest;
     private ArrayList<Wagon> mainWagon;
 
@@ -28,6 +29,7 @@ public class Joueur {
         this.score = 0;
         mainWagon = this.plateau.piocherWagon(4);
         mainDest = this.plateau.choisirDest(2);
+        routes = new ArrayList<Route>();
     }
 
     /**
