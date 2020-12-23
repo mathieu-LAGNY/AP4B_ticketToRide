@@ -3,9 +3,9 @@ package main;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Deck<Carte> {
-    private ArrayList<Carte> pioche;
-    private ArrayList<Carte> defausse;
+public class Deck<T extends Carte> {
+    private ArrayList<T> pioche;
+    private ArrayList<T> defausse;
 
     /**
      * Pioche x cartes, si la pioche ne contient pas assez de cartes,
@@ -13,8 +13,8 @@ public class Deck<Carte> {
      * @param x nombre de cartes à piocher
      * @return une liste des cartes piochées
      */
-    public ArrayList<Carte> piocher(int x) {
-        ArrayList<Carte> cartes = new ArrayList<>();
+    public ArrayList<T> piocher(int x) {
+        ArrayList<T> cartes = new ArrayList<>();
         if (x>nbCartes()) {
             remettrePioche();
         }
@@ -31,7 +31,7 @@ public class Deck<Carte> {
     /**
      * @param listeCartes liste des cartes à mettre dans la defausse
      */
-    public void defausser(ArrayList<Carte> listeCartes) {
+    public void defausser(ArrayList<T> listeCartes) {
         defausse.addAll(listeCartes);
     }
 
