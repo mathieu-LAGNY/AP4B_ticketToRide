@@ -32,6 +32,14 @@ public class Joueur {
         routes = new ArrayList<Route>();
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public String getNomJoueur() {
+        return nomJoueur;
+    }
+
     /**
      * /!\ Ne vérifie pas que les villes sont reliées
      * Fait le total des cartes destinations pour chaque joueur
@@ -47,11 +55,11 @@ public class Joueur {
     /**
      * Exécute le tour d'un joueur
      *
-     * Cette méthode exécute successivement les 3 phases du tour d'un joueur:
+     * Cette méthode exécute une des trois actions possible pour un tour
      *
      * 1. (Pioche) Effectuer un choix pour piocher des cartes
      *
-     * 2. (Destinations) Facultatif : prendre de 1 à 3 cartes destination parmi 3
+     * 2. (Destinations) Prendre de 1 à 3 cartes destination parmi 3
      *
      * 3. (Route) Le joueur choisit de prendre le contrôle d'une voie s'il a les
      * bonnes cartes wagon en main. Les points correspondant à la longeueur de la voie

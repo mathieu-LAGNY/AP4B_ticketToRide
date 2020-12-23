@@ -105,6 +105,19 @@ public class Plateau {
     }
 
     /**
+     * Appelle totalDest puis affiche les scores de chaque joueur
+     */
+    private void finPartie() {
+        totalDest();
+        String affichage = "Scores\n";
+        for (Joueur joueur: joueurs) {
+            affichage += joueur.getNomJoueur() + " ";
+            affichage += joueur.getScore() + "\n";
+        }
+        System.out.println(affichage);
+    }
+
+    /**
      * Teste si la partie est terminée
      *
      * @return un booléen indiquant si la partie est terminée, c'est-à-dire si
@@ -134,7 +147,26 @@ public class Plateau {
      * la méthode affiche le score final
      */
     public void run() {
-
+        while (!estFini()) {
+            // joue le tour du joueur courant
+            joueurs.get(joueurActuel).playTurn();
+            // passe au joueur suivant
+            joueurActuel += 1;
+            if (joueurActuel >= joueurs.size()) {
+                joueurActuel = 0;
+            }
+        }
+        // le dernier tour avant la fin
+        for (int i = 0; i < joueurs.size(); i++) {
+            // joue le tour du joueur courant
+            joueurs.get(joueurActuel).playTurn();
+            // passe au joueur suivant
+            joueurActuel += 1;
+            if (joueurActuel >= joueurs.size()) {
+                joueurActuel = 0;
+            }
+        }
+        finPartie();
     }
 
     /**
