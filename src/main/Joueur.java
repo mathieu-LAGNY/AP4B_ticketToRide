@@ -66,6 +66,13 @@ public class Joueur {
         // 3. (Route)
     }
 
+    /**
+     * Teste si le joueur à moins de 3 pions wagon pour savoir s'il ne reste plus qu'un tour
+     * @@return true s'il ne reste plus assez de pions wagons
+     */
+    public boolean plusDeWagon() {
+        return pionWagon<3;
+    }
 
     /**
      * Renvoie une représentation des informations du joueur sous la forme d'une

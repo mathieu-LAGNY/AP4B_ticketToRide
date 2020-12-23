@@ -111,7 +111,10 @@ public class Plateau {
      * au moins l'un des joueurs a moins de 3 pions wagons
      */
     private boolean estFini() {
-        return true;
+        for (Joueur joueur: joueurs) {
+            if (joueur.plusDeWagon()) return true;
+        }
+        return false;
     }
 
     /**
@@ -127,7 +130,8 @@ public class Plateau {
      * Boucle d'exécution d'une partie.
      *
      * Cette méthode exécute les tours des joueurs jusqu'à ce que la partie soit
-     * terminée. Lorsque la partie se termine, la méthode affiche le score final
+     * terminée. Lorsque la partie se termine, un dernier tour est effectuée puis
+     * la méthode affiche le score final
      */
     public void run() {
 
