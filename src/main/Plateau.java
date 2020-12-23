@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Plateau {
     private final ArrayList<Joueur> joueurs;
     private Deck<Wagon> deckWagon;
-    private Deck<Destination> deckDestination;
+    private ArrayList<Destination> pileDestination;
     private ArrayList<Wagon> wagonVisible;
     private int joueurActuel;
     private int nbManche; // Pour coller avec le theme on envisage manche = semestre
@@ -78,22 +78,21 @@ public class Plateau {
     }
 
     /**
-     * @param x nombre de cartes destination a prendre dans la pioche de Destination
-     */
-    public ArrayList<Destination> piocherDest(int x) {
-        return deckDestination.piocher(x);
-    }
-
-    /**
      * /!\ Ajouter le choix : affichage + saisie
      * Prend 3 cartes destination et fait choisir au joueur
      * @param min nombre minimum de cartes à prendre (2 au début, 1 sinon)
      */
     public ArrayList<Destination> choisirDest(int min) {
-        ArrayList<Destination> pioche = deckDestination.piocher(3);
+        ArrayList<Destination> pioche = new ArrayList<>();
+        for (int i = 0; i < 3; i++) pioche.add(pileDestination.remove(0));
         // affichage
+        System.out.println("Cartes destination piochees");
+        for (Destination destination: pioche) {
+            System.out.println(destination + "\n");
+        }
         // choix
-        // on eneleve ce qu'on ne veut pas
+        // les cartes qu'on ne veut pas sont remises sous la pile de cartes destination
+        // pileDestination.add(pioche.remove(indice des cartes non choisies));
         return pioche;
     }
 
