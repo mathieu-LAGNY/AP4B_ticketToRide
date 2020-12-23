@@ -15,6 +15,10 @@ public class Route {
         this.longueur = longueur;
     }
 
+    public int getLongueur() {
+        return longueur;
+    }
+
     @Override
     public String toString() {
         return UVA +

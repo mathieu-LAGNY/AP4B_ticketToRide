@@ -2,6 +2,7 @@ package main;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Joueur {
     private String nomJoueur;
@@ -52,25 +53,21 @@ public class Joueur {
         return total;
     }
     
-        /**
-     * /!\ La fonction comptage des points  
-     *     elle prend en paramtre le joueur concerné et la route qu'il souhaite occupé 
-     *     compare le nombre de wogon à la longueur de la route 
+    /**
+     * Fonction qui correspond à l'ajout d'une route valide
+     * Ajoute les points correspondant à la longueur de la route au score du joueur,
+     * décrémente le nombre de pion wagon de la longueur de la route et
+     * ajoute la route à la liste de routes du joueur
+     * @param route acquise par le joueur
      *  */
-    public void comptageDesPoints(Route r) {
-    	int longueurRoute = this.longueur;
-    	ArrayList<Integer> Liste = new ArrayList<>();
-    	Liste.add(0);
-    	Liste.add(1);
-    	Liste.add(2);
-    	Liste.add(4);
-    	Liste.add(7);
-    	Liste.add(10);
-    	Liste.add(15);{
-    		if (Liste.contains(longueurRoute)) {
-    		this.score +=Liste.get(longueurRoute)	
-                this.wagon -= this.longueur
-    	    }
+    public void ajouteRoute(Route route) {
+    	int longueurRoute = route.getLongueur();
+    	ArrayList<Integer> liste = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 4, 7, 10, 15));
+        if (longueurRoute < liste.size()) { // facultatif on part du principe que la route est créée de la bonne taille
+            this.score += liste.get(longueurRoute);
+            this.pionWagon -= longueurRoute;
+            this.routes.add(route);
+        }
     }
 
 
@@ -84,16 +81,34 @@ public class Joueur {
      * 2. (Destinations) Prendre de 1 à 3 cartes destination parmi 3
      *
      * 3. (Route) Le joueur choisit de prendre le contrôle d'une voie s'il a les
-     * bonnes cartes wagon en main. Les points correspondant à la longeueur de la voie
-     * sont ajoutés à son score. Le nombre de pion Wagon correspondant est decremente de
-     * son compteur wagon.
+     * bonnes cartes wagon en main.
      *
-     * Et le joueur à terminé son tour
+     * Et le joueur a terminé son tour
      */
     public void playTurn() {
-        // 1. (Pioche)
-        // 2. (Destinations)
-        // 3. (Route)
+        // choix prend la valeur 0 dans le cas où le joueur s'est trompé dans ses actions
+        // par exemple s'il annonce acheter une route sans avoir les cartes wagon nécessaires
+        int choix = 0;
+        while (choix == 0) {
+            // choix de l'action réalisée (1, 2 ou 3)
+            // 1. (Pioche)
+            if (choix == 1) {
+                mainWagon.addAll(plateau.choisirWagon());
+            }
+            // 2. (Destinations)
+            if (choix == 2) {
+                mainDest.addAll(plateau.choisirDest(1));
+            }
+            // 3. (Route)
+            if (choix == 3) {
+                Route route = plateau.choisirRoute();
+                if (route == null) {
+                    choix = 0; // la route n'était pas valide
+                } else {
+                    ajouteRoute(route);
+                }
+            }
+        }
     }
 
     /**

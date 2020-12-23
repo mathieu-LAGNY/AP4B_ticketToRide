@@ -65,6 +65,7 @@ public class Plateau {
      * Action de Pioche, le joueur choisit s'il tire dans la pioche ou dans les
      * cartes visibles à deux reprises. Une seule fois si la première est une locomotive
      * visible et il ne peut prendre de locomotive visible en deuxième.
+     * @return liste des cartes wagon piochées
      */
     public ArrayList<Wagon> choisirWagon() {
         ArrayList<Wagon> pioche = new ArrayList<>();
@@ -81,6 +82,7 @@ public class Plateau {
      * /!\ Ajouter le choix : affichage + saisie
      * Prend 3 cartes destination et fait choisir au joueur
      * @param min nombre minimum de cartes à prendre (2 au début, 1 sinon)
+     * @return liste des cartes destinaation choisies
      */
     public ArrayList<Destination> choisirDest(int min) {
         ArrayList<Destination> pioche = new ArrayList<>();
@@ -94,6 +96,17 @@ public class Plateau {
         // les cartes qu'on ne veut pas sont remises sous la pile de cartes destination
         // pileDestination.add(pioche.remove(indice des cartes non choisies));
         return pioche;
+    }
+
+    /**
+     * /!\ Ajouter le choix : affichage + saisie
+     * @return route choisie, null si la route n'est pas valide
+     */
+    public Route choisirRoute() {
+        // choix
+        // appel à acheterRoute (les arguments peuvent être modifiés en fonction de ce qui nous arrange)
+        Route route = acheterRoute("UVA","UVB"); // patron
+        return route;
     }
 
     /**
@@ -133,10 +146,21 @@ public class Plateau {
     /**
      * /!\ Penser aux routes doubles
      *
-     * Un joueur achète une route entre deux villes
+     * Un joueur achète une route entre deux villes, la route doit être libre
+     * (dans listeRoute) et le joueur doit avoir les cartes wagon correspondantes.
+     * Si l'action est valide on renvoie la route, sinon null;
      */
-    private void acheterRoute(String villeA, String villeB) {
+    private Route acheterRoute(String villeA, String villeB) {
+        boolean valide = true; // patron
+        Route route = null; // patron
+        // verification de la validité et on recupere l'indice de la route dans la liste
+        int indice = 0; // patron
 
+        if (valide) {
+            // retire la route de celles disponible
+            route = listeRoute.get(indice);
+        }
+        return route;
     }
 
     /**
