@@ -1,8 +1,8 @@
 package main;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import static java.awt.Color.*;
@@ -13,7 +13,7 @@ public class Plateau {
     private ArrayList<Destination> pileDestination;
     private ArrayList<Wagon> wagonVisible;
     private int joueurActuel;
-    private int nbManche; // Pour coller avec le theme on envisage manche = semestre
+    // private int nbManche; Pour coller avec le theme on envisage manche = semestre
 
     private ArrayList<Route> listeRoute;
     private ArrayList<UV> listeUV;
@@ -24,6 +24,232 @@ public class Plateau {
     - Pour l'action de destination (+ méthode + affichage)
     - Pour l'action d'achat d'une Route
      */
+
+    /**
+     * /!\ Ajouter initalisation de deckWagon
+     * Constructeur
+     *
+     * @param nomJoueurs liste des noms des joueurs qui participent à la partie.
+     */
+    public Plateau(String[] nomJoueurs, String[] couleurs) {
+        joueurActuel = 0;
+        int nbJoueurs = nomJoueurs.length;
+
+        // initialisation listeUV
+        listeUV = new ArrayList<>();
+        UV AP4A = new UV("AP4A");
+        listeUV.add(AP4A);
+        UV SY40 = new UV("SY40");
+        listeUV.add(SY40);
+        UV LE01 = new UV("LE01");
+        listeUV.add(LE01);
+        UV LE02 = new UV("LE02");
+        listeUV.add(LE02);
+        UV LE03 = new UV("LE03");
+        listeUV.add(LE03);
+        UV LS01 = new UV("LS01");
+        listeUV.add(LS01);
+        UV LS02 = new UV("LS02");
+        listeUV.add(LS02);
+        UV LS03 = new UV("LS03");
+        listeUV.add(LS03);
+        UV IA41 = new UV("IA41");
+        listeUV.add(IA41);
+        UV EI10 = new UV("EI10");
+        listeUV.add(EI10);
+        UV PMA = new UV("PMA");
+        listeUV.add(PMA);
+        UV MTA = new UV("MTA");
+        listeUV.add(MTA);
+        UV MTB = new UV("MTB");
+        listeUV.add(MTB);
+        UV MTC = new UV("MTC");
+        listeUV.add(MTC);
+        UV PSA1 = new UV("PSA1");
+        listeUV.add(PSA1);
+        UV PSB1 = new UV("PSB1");
+        listeUV.add(PSB1);
+        UV LO52 = new UV("LO52");
+        listeUV.add(LO52);
+        UV ST10 = new UV("ST10");
+        listeUV.add(ST10);
+        UV ST40 = new UV("ST40");
+        listeUV.add(ST40);
+        UV ST50 = new UV("ST50");
+        listeUV.add(ST50);
+        UV IT41 = new UV("IT41");
+        listeUV.add(IT41);
+        UV IT40 = new UV("IT40");
+        listeUV.add(IT40);
+        UV IT42 = new UV("IT42");
+        listeUV.add(IT42);
+        UV IT43 = new UV("IT43");
+        listeUV.add(IT43);
+        UV IT44 = new UV("IT44");
+        listeUV.add(IT44);
+        UV IT45 = new UV("IT45");
+        listeUV.add(IT45);
+        UV RS40 = new UV("RS40");
+        listeUV.add(RS40);
+        UV HM40 = new UV("HM40");
+        listeUV.add(HM40);
+        UV SI40 = new UV("SI40");
+        listeUV.add(SI40);
+        UV SY41 = new UV("SY41");
+        listeUV.add(SY41);
+        UV GE01 = new UV("GE01");
+        listeUV.add(GE01);
+        UV GE10 = new UV("GE10");
+        listeUV.add(GE10);
+        UV PH02 = new UV("PH02");
+        listeUV.add(PH02);
+        UV PH05 = new UV("PH05");
+        listeUV.add(PH05);
+        UV SY80 = new UV("SY80");
+        listeUV.add(SY80);
+        UV SY45 = new UV("SY45");
+        listeUV.add(SY45);
+        // Initialisation listeRoute
+        listeRoute = new ArrayList<>(Arrays.asList(
+                new Route(PMA, MTA, gray, 1),
+                new Route(MTA, PMA, gray, 1),
+                new Route(MTA, PSA1, gray, 1),
+                new Route(PSA1, MTA, gray, 1),
+                new Route(PSA1, LS01, GREEN, 5),
+                new Route(LS01, PSA1, PINK, 5),
+                new Route(LS01, ST10, YELLOW, 3),
+                new Route(ST10, LS01, PINK, 3),
+                new Route(PMA, EI10, gray, 3),
+                new Route(MTA, EI10, gray, 4),
+                new Route(MTA, MTB, YELLOW, 6),
+                new Route(EI10, MTB, GREEN, 4),
+                new Route(PSA1, LS02, BLUE, 6),
+                new Route(LS01, LS02, ORANGE, 5),
+                new Route(LS02, LS01, YELLOW, 5),
+                new Route(LE01, LS02, BLUE, 3),
+                new Route(ST10, LE01, gray, 2),
+                new Route(ST10, GE01, gray, 3),
+                new Route(PMA, MTA, gray, 3),
+                new Route(EI10, SY41, WHITE, 6),
+                new Route(MTB, SY41, BLUE, 4),
+                new Route(LS02, MTB, PINK, 3),
+                new Route(MTB, PSB1, GREEN, 4),
+                new Route(LS02, MTB, RED, 3),
+                new Route(MTB, LS02, YELLOW, 3),
+                new Route(GE01, PSB1, WHITE, 5),
+                new Route(GE01, LE02, BLUE, 3),
+                new Route(LE02, LE03, BLUE, 3),
+                new Route(PSB1, LE03, RED, 4),
+                new Route(ST10, GE10, BLACK, 6),
+                new Route(GE01, GE10, gray, 3),
+                new Route(GE10, LE03, YELLOW, 5),
+                new Route(MTB, MTC, ORANGE, 6),
+                new Route(MTB, LS03, RED, 5),
+                new Route(SY41, MTC, BLACK, 4),
+                new Route(SY41, PH02, gray, 6),
+                new Route(MTC, LS03, gray, 2),
+                new Route(LS03, MTC, GREEN, 2),
+                new Route(MTC, PH02, YELLOW, 3),
+                new Route(MTC, PH05, PINK, 6),
+                new Route(MTC, HM40, RED, 3),
+                new Route(PSB1, LS03, PINK, 4),
+                new Route(LS03, AP4A, gray, 1),
+                new Route(AP4A, LS03, gray, 1),
+                new Route(LS03, HM40, BLUE, 4),
+                new Route(PSB1, AP4A, BLACK, 4),
+                new Route(AP4A, PSB1, ORANGE, 4),
+                new Route(GE10, IA41, RED, 4),
+                new Route(GE10, ST40, GREEN, 6),
+                new Route(AP4A, SY40, GREEN, 2),
+                new Route(SY40, AP4A, PINK, 2),
+                new Route(AP4A, LE03, gray, 2),
+                new Route(LE03, AP4A, YELLOW, 2),
+                new Route(LE03, IT40, BLACK, 2),
+                new Route(LE03, IA41, gray, 2),
+                new Route(IA41, LE03, gray, 2),
+                new Route(IA41, ST40, gray, 2),
+                new Route(ST40, IA41, gray, 2),
+                new Route(IA41, IT40, gray, 2),
+                new Route(IT40, SI40, GREEN, 3),
+                new Route(IT40, IT41, WHITE, 3),
+                new Route(IT40, SY40, gray, 2),
+                new Route(SI40, ST50, RED, 6),
+                new Route(SI40, IT42, YELLOW, 4),
+                new Route(IT42, SI40, ORANGE, 4),
+                new Route(IT42, ST50, BLACK, 5),
+                new Route(IT44, ST50, PINK, 4),
+                new Route(SY40, HM40, WHITE, 2),
+                new Route(HM40, SY40, GREEN, 2),
+                new Route(SY40, RS40, ORANGE, 5),
+                new Route(SY40, IT41, gray, 2),
+                new Route(IT41, IT42, gray, 1),
+                new Route(IT41, IT43, BLACK, 3),
+                new Route(IT41, RS40, YELLOW, 4),
+                new Route(IT42, IT43, gray, 2),
+                new Route(IT43, IT42, BLACK, 2),
+                new Route(IT42, IT44, gray, 2),
+                new Route(IT44, IT43, gray, 2),
+                new Route(IT43, IT45, gray, 2),
+                new Route(IT45, IT43, gray, 2),
+                new Route(IT43, RS40, gray, 2),
+                new Route(IT45, SY45, BLACK, 2),
+                new Route(SY45, IT45, ORANGE, 2),
+                new Route(RS40, IT45, gray, 2),
+                new Route(HM40, PH05, WHITE, 4),
+                new Route(HM40, RS40, ORANGE, 3),
+                new Route(RS40, HM40, BLACK, 3),
+                new Route(PH05, RS40, gray, 2),
+                new Route(PH05, LO52, gray, 3),
+                new Route(RS40, SY45, GREEN, 2),
+                new Route(SY45, RS40, WHITE, 2),
+                new Route(SY45, SY80, RED, 2),
+                new Route(SY80, SY45, YELLOW, 2),
+                new Route(SY45, LO52, BLUE, 3),
+                new Route(LO52, SY80, gray, 2),
+                new Route(SY80, LO52, ORANGE, 2)));
+        //initialisation deckDestination
+        pileDestination = new ArrayList<>(Arrays.asList(
+                new Destination(LS01, LS03, 13),
+                new Destination(LE01, LE03, 9),
+                new Destination(PSA1, PSB1, 9),
+                new Destination(MTA, MTC, 13),
+                new Destination(ST10, ST50, 22),
+                new Destination(SY40, SY80, 9),
+                new Destination(SY40, SY45, 7),
+                new Destination(SY41, SY80, 14),
+                new Destination(SY41, SY40, 9),
+                new Destination(PMA, LO52, 22),
+                new Destination(EI10, GE10, 13),
+                new Destination(ST10, ST40, 13),
+                new Destination(MTA, AP4A, 13),
+                new Destination(PMA, ST10, 11),
+                new Destination(MTC, IA41, 7),
+                new Destination(MTB, IT40, 11),
+                new Destination(SI40, IT45, 8),
+                new Destination(PH05, ST50, 11),
+                new Destination(PH02, SI40, 12),
+                new Destination(MTB, HM40, 9),
+                new Destination(MTB, PH05, 13),
+                new Destination(AP4A, SY80, 12),
+                new Destination(IT41, IT45, 5),
+                new Destination(IT40, IT44, 6),
+                new Destination(PSB1, HM40, 8),
+                new Destination(MTC, RS40, 6),
+                new Destination(ST40, ST50, 8),
+                new Destination(GE01, AP4A, 8),
+                new Destination(PH02, IT44, 8),
+                new Destination(SY41, AP4A, 7)));
+        // initialisation deckWagon
+        // Question définir 12 fois un wagon de couleur X ou une seule fois et l'utiliser 12 ?
+        // Création des joueurs
+        joueurs = new ArrayList<>(nbJoueurs);
+        int i = 0;
+        for (String nomJoueur : nomJoueurs){
+            joueurs.add(new Joueur(nomJoueur, this, Color.getColor(couleurs[i]))); // a tester
+            i++;
+        }
+        wagonVisible = piocherWagon(5);
+    }
 
     public Wagon saisiePiocheVisible(Boolean locomotiveTiree) {
         while (true) {
@@ -111,195 +337,6 @@ public class Plateau {
                 System.out.println("Saisie incorrect");
             }
         }
-    }
-
-    /**
-     * /!\ Ajouter initalisation des decks, des routes et des UV
-     * <p>
-     * Constructeur
-     *
-     * @param nomJoueurs liste des noms des joueurs qui participent à la partie.
-     */
-    public Plateau(String[] nomJoueurs, String[] couleurs, int nbManche) {
-        joueurActuel = 0;
-        int nbJoueurs = nomJoueurs.length;
-
-        // initialisation listeUV
-        listeUV = new ArrayList<>();
-        UV AP4A = new UV("AP4A"); listeUV.add(AP4A);
-        UV SY40 = new UV("SY40"); listeUV.add(SY40);
-        UV LE01 = new UV("LE01"); listeUV.add(LE01);
-        UV LE02 = new UV("LE02"); listeUV.add(LE02);
-        UV LE03 = new UV("LE03"); listeUV.add(LE03);
-        UV LS01 = new UV("LS01"); listeUV.add(LS01);
-        UV LS02 = new UV("LS02"); listeUV.add(LS02);
-        UV LS03 = new UV("LS03"); listeUV.add(LS03);
-        UV IA41 = new UV("IA41"); listeUV.add(IA41);
-        UV EI10 = new UV("EI10"); listeUV.add(EI10);
-        UV PMA = new UV("PMA"); listeUV.add(PMA);
-        UV MTA = new UV("MTA"); listeUV.add(MTA);
-        UV MTB = new UV("MTB"); listeUV.add(MTB);
-        UV MTC = new UV("MTC"); listeUV.add(MTC);
-        UV PSA1 = new UV("PSA1"); listeUV.add(PSA1);
-        UV PSB1 = new UV("PSB1"); listeUV.add(PSB1);
-        UV LO52 = new UV("LO52"); listeUV.add(LO52);
-        UV ST10 = new UV("ST10"); listeUV.add(ST10);
-        UV ST40 = new UV("ST40"); listeUV.add(ST40);
-        UV ST50 = new UV("ST50"); listeUV.add(ST50);
-        UV IT41 = new UV("IT41"); listeUV.add(IT41);
-        UV IT40 = new UV("IT40"); listeUV.add(IT40);
-        UV IT42 = new UV("IT42"); listeUV.add(IT42);
-        UV IT43 = new UV("IT43"); listeUV.add(IT43);
-        UV IT44 = new UV("IT44"); listeUV.add(IT44);
-        UV IT45 = new UV("IT45"); listeUV.add(IT45);
-        UV RS40 = new UV("RS40"); listeUV.add(RS40);
-        UV HM40 = new UV("HM40"); listeUV.add(HM40);
-        UV SI40 = new UV("SI40"); listeUV.add(SI40);
-        UV SY41 = new UV("SY41"); listeUV.add(SY41);
-        UV GE01 = new UV("GE01"); listeUV.add(GE01);
-        UV GE10 = new UV("GE10"); listeUV.add(GE10);
-        UV PH02 = new UV("PH02"); listeUV.add(PH02);
-        UV PH05 = new UV("PH05"); listeUV.add(PH05);
-        UV SY80 = new UV("SY80"); listeUV.add(SY80);
-        UV SY45 = new UV("SY45"); listeUV.add(SY45);
-        // Initialisation listeRoute
-        listeRoute = new ArrayList<>(Arrays.asList(
-        new Route(PMA, MTA, gray, 1),
-        new Route(MTA, PMA, gray, 1),
-        new Route(MTA, PSA1, gray, 1),
-        new Route(PSA1, MTA, gray, 1),
-        new Route(PSA1, LS01, GREEN, 5),
-        new Route(LS01, PSA1, PINK, 5),
-        new Route(LS01, ST10, YELLOW, 3),
-        new Route(ST10, LS01, PINK, 3),
-        new Route(PMA, EI10, gray, 3),
-        new Route(MTA, EI10, gray, 4),
-        new Route(MTA, MTB, YELLOW, 6),
-        new Route(EI10, MTB, GREEN, 4),
-        new Route(PSA1, LS02, BLUE, 6),
-        new Route(LS01, LS02, ORANGE, 5),
-        new Route(LS02, LS01, YELLOW, 5),
-        new Route(LE01, LS02, BLUE, 3),
-        new Route(ST10, LE01, gray, 2),
-        new Route(ST10, GE01, gray, 3),
-        new Route(PMA, MTA, gray, 3),
-        new Route(EI10, SY41, WHITE, 6),
-        new Route(MTB, SY41, BLUE, 4),
-        new Route(LS02, MTB, PINK, 3),
-        new Route(MTB, PSB1, GREEN, 4),
-        new Route(LS02, MTB, RED, 3),
-        new Route(MTB, LS02, YELLOW, 3),
-        new Route(GE01, PSB1, WHITE, 5),
-        new Route(GE01, LE02, BLUE, 3),
-        new Route(LE02, LE03, BLUE, 3),
-        new Route(PSB1, LE03, RED, 4),
-        new Route(ST10, GE10, BLACK, 6),
-        new Route(GE01, GE10, gray, 3),
-        new Route(GE10, LE03, YELLOW, 5),
-        new Route(MTB, MTC, ORANGE, 6),
-        new Route(MTB, LS03, RED, 5),
-        new Route(SY41, MTC, BLACK, 4),
-        new Route(SY41, PH02, gray, 6),
-        new Route(MTC, LS03, gray, 2),
-        new Route(LS03, MTC, GREEN, 2),
-        new Route(MTC, PH02, YELLOW, 3),
-        new Route(MTC, PH05, PINK, 6),
-        new Route(MTC, HM40, RED, 3),
-        new Route(PSB1, LS03, PINK, 4),
-        new Route(LS03, AP4A, gray, 1),
-        new Route(AP4A, LS03, gray, 1),
-        new Route(LS03, HM40, BLUE, 4),
-        new Route(PSB1, AP4A, BLACK, 4),
-        new Route(AP4A, PSB1, ORANGE, 4),
-        new Route(GE10, IA41, RED, 4),
-        new Route(GE10, ST40, GREEN, 6),
-        new Route(AP4A, SY40, GREEN, 2),
-        new Route(SY40, AP4A, PINK, 2),
-        new Route(AP4A, LE03, gray, 2),
-        new Route(LE03, AP4A, YELLOW, 2),
-        new Route(LE03, IT40, BLACK, 2),
-        new Route(LE03, IA41, gray, 2),
-        new Route(IA41, LE03, gray, 2),
-        new Route(IA41, ST40, gray, 2),
-        new Route(ST40, IA41, gray, 2),
-        new Route(IA41, IT40, gray, 2),
-        new Route(IT40, SI40, GREEN, 3),
-        new Route(IT40, IT41, WHITE, 3),
-        new Route(IT40, SY40, gray, 2),
-        new Route(SI40, ST50, RED, 6),
-        new Route(SI40, IT42, YELLOW, 4),
-        new Route(IT42, SI40, ORANGE, 4),
-        new Route(IT42, ST50, BLACK, 5),
-        new Route(IT44, ST50, PINK, 4),
-        new Route(SY40, HM40, WHITE, 2),
-        new Route(HM40, SY40, GREEN, 2),
-        new Route(SY40, RS40, ORANGE, 5),
-        new Route(SY40, IT41, gray, 2),
-        new Route(IT41, IT42, gray, 1),
-        new Route(IT41, IT43, BLACK, 3),
-        new Route(IT41, RS40, YELLOW, 4),
-        new Route(IT42, IT43, gray, 2),
-        new Route(IT43, IT42, BLACK, 2),
-        new Route(IT42, IT44, gray, 2),
-        new Route(IT44, IT43, gray, 2),
-        new Route(IT43, IT45, gray, 2),
-        new Route(IT45, IT43, gray, 2),
-        new Route(IT43, RS40, gray, 2),
-        new Route(IT45, SY45, BLACK, 2),
-        new Route(SY45, IT45, ORANGE, 2),
-        new Route(RS40, IT45, gray, 2),
-        new Route(HM40, PH05, WHITE, 4),
-        new Route(HM40, RS40, ORANGE, 3),
-        new Route(RS40, HM40, BLACK, 3),
-        new Route(PH05, RS40, gray, 2),
-        new Route(PH05, LO52, gray, 3),
-        new Route(RS40, SY45, GREEN, 2),
-        new Route(SY45, RS40, WHITE, 2),
-        new Route(SY45, SY80, RED, 2),
-        new Route(SY80, SY45, YELLOW, 2),
-        new Route(SY45, LO52, BLUE, 3),
-        new Route(LO52, SY80, gray, 2),
-        new Route(SY80, LO52, ORANGE, 2)));
-        //initialisation deckDestination
-        pileDestination = new ArrayList<>(Arrays.asList(
-                new Destination(LS01, LS03, 13),
-                new Destination(LE01, LE03, 9),
-                new Destination(PSA1, PSB1, 9),
-                new Destination(MTA, MTC, 13),
-                new Destination(ST10, ST50, 22),
-                new Destination(SY40, SY80, 9),
-                new Destination(SY40, SY45, 7),
-                new Destination(SY41, SY80, 14),
-                new Destination(SY41, SY40, 9),
-                new Destination(PMA, LO52, 22),
-                new Destination(EI10, GE10, 13),
-                new Destination(ST10, ST40, 13),
-                new Destination(MTA, AP4A, 13),
-                new Destination(PMA, ST10, 11),
-                new Destination(MTC, IA41, 7),
-                new Destination(MTB, IT40, 11),
-                new Destination(SI40, IT45, 8),
-                new Destination(PH05, ST50, 11),
-                new Destination(PH02, SI40, 12),
-                new Destination(MTB, HM40, 9),
-                new Destination(MTB, PH05, 13),
-                new Destination(AP4A, SY80, 12),
-                new Destination(IT41, IT45, 5),
-                new Destination(IT40, IT44, 6),
-                new Destination(PSB1, HM40, 8),
-                new Destination(MTC, RS40, 6),
-                new Destination(ST40, ST50, 8),
-                new Destination(GE01, AP4A, 8),
-                new Destination(PH02, IT44, 8),
-                new Destination(SY41, AP4A, 7)));
-        // initialisation deckWagon
-        // Question définir 12 fois un wagon de couleur X ou une seule fois et l'utiliser 12 ?
-        // Création des joueurs
-        joueurs = new ArrayList<>(nbJoueurs);
-        for (String nomJoueur : nomJoueurs)
-            joueurs.add(new Joueur(nomJoueur, this));
-
-        wagonVisible = piocherWagon(5);
     }
 
     /**

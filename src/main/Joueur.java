@@ -22,7 +22,7 @@ public class Joueur {
      * @param nomJoueur le nom du joueur
      * @param plateau   le plateau de la partie en cours
      */
-    public Joueur(String nomJoueur, Plateau plateau) {
+    public Joueur(String nomJoueur, Plateau plateau, Color couleur) {
         this.nomJoueur = nomJoueur;
         this.plateau = plateau;
         this.couleur = null;
