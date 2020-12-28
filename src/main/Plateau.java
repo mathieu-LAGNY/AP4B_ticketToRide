@@ -296,11 +296,12 @@ public class Plateau {
     }
     /**
      * Permet de piocher la carte {indice} dans les cartes visibles
-     * et de l'ajouter au cartes wagon du joueur
+     * la renvoie et complète les cartes wagon visibles
      */
-    public void piocheWagonVisible(int indice) {
-        joueurs.get(joueurActuel).addWagon(wagonVisible.remove(indice));
+    public Wagon piocheWagonVisible(int indice) {
+        Wagon wagon = wagonVisible.remove(indice-1);
         wagonVisible.addAll(piocherWagon(1));
+        return wagon;
     }
 
     public ArrayList<Integer> saisieDestination() {
@@ -309,7 +310,7 @@ public class Plateau {
         tabIndice.add(2);
         tabIndice.add(3);
         while (true) {
-            System.out.println("Saisir une par une les cartes destination à garder, puis saisir \"V\" pour valider");
+            System.out.println("Saisir une par une les cartes destination à enlever, puis saisir \"V\" pour valider");
             String choix = System.console().readLine();
             switch (choix) {
                 case "1":
@@ -398,10 +399,11 @@ public class Plateau {
         for (Destination destination : pioche) {
             System.out.println(destination + "\n");
         }
-        // choix
-        saisieDestination(); //retourne un tableau des indices non choisies
+        // retourne un tableau des indices non choisis
         // les cartes qu'on ne veut pas sont remises sous la pile de cartes destination
-        // pileDestination.add(pioche.remove(indice des cartes non choisies));
+        for (int indice: saisieDestination()) {
+            pileDestination.add(pioche.remove(indice-1));
+        }
         return pioche;
     }
 
