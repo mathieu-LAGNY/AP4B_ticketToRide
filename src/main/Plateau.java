@@ -76,7 +76,7 @@ public class Plateau {
         tabIndice.add(2);
         tabIndice.add(3);
         while (true) {
-            System.out.println("Saisir les cartes de destination à garder, saisir \"V\" pour valider");
+            System.out.println("Saisir une par une les cartes destination à garder, puis saisir \"V\" pour valider");
             String choix = System.console().readLine();
             switch (choix) {
                 case "1":
@@ -109,7 +109,6 @@ public class Plateau {
             }
             else{
                 System.out.println("Saisie incorrect");
-                break;
             }
         }
     }
