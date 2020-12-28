@@ -62,7 +62,7 @@ public class Joueur {
      *  */
     public void ajouteRoute(Route route) {
     	int longueurRoute = route.getLongueur();
-    	ArrayList<Integer> liste = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 4, 7, 10, 15));
+    	ArrayList<Integer> liste = new ArrayList<>(Arrays.asList(0, 1, 2, 4, 7, 10, 15));
         if (longueurRoute < liste.size()) { // facultatif on part du principe que la route est créée de la bonne taille
             this.score += liste.get(longueurRoute);
             this.pionWagon -= longueurRoute;

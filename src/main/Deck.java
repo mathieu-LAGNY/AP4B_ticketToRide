@@ -7,6 +7,10 @@ public class Deck<T extends Carte> {
     private ArrayList<T> pioche;
     private ArrayList<T> defausse;
 
+    public Deck(ArrayList<T> pioche) {
+        this.pioche = pioche;
+    }
+
     /**
      * Pioche x cartes, si la pioche ne contient pas assez de cartes,
      * mélange la pioche et la défausse

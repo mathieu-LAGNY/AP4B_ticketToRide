@@ -7,8 +7,12 @@ public class UV {
 
     // on pourra eventuellement creer un Enum pour la categorie d'UV (EC,OOM,QC,TM,CS,ST)
 
-    public UV(String nom, Boolean printemps, Boolean automne) {
+    public UV(String nom) {
         this.nom = nom;
+    }
+
+    public UV(String nom, Boolean printemps, Boolean automne) {
+        this(nom);
         this.printemps = printemps;
         this.automne = automne;
     }
