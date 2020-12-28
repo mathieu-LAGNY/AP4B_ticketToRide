@@ -1,6 +1,9 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class Plateau {
     private final ArrayList<Joueur> joueurs;
@@ -89,6 +92,23 @@ public class Plateau {
                 default:
                     System.out.println("Saisie incorrect");
                     break;
+            }
+        }
+    }
+
+    public ArrayList<String> saisieRoute(){
+        while (true) {
+            System.out.println("Saisir les deux routes en séparant par un espace (insensible à la case)");
+            String choix = System.console().readLine();
+            String regex = "/[A-Z] [A-Z]/i";
+            if(Pattern.matches(regex, choix))
+            {
+                ArrayList<String> choixRoute = new ArrayList<>(Arrays.asList(choix.split(" ")));
+                return choixRoute;
+            }
+            else{
+                System.out.println("Saisie incorrect");
+                break;
             }
         }
     }
