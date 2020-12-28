@@ -41,6 +41,10 @@ public class Joueur {
         return nomJoueur;
     }
 
+    public void addWagon(Wagon wagon) {
+        this.mainWagon.add(wagon);
+    }
+
     /**
      * /!\ Ne vérifie pas que les villes sont reliées
      * Fait le total des cartes destinations pour chaque joueur

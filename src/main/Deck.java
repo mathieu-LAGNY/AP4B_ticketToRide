@@ -22,6 +22,9 @@ public class Deck<T extends Carte> {
         if (x>nbCartes()) {
             remettrePioche();
         }
+        for (int i = 0; i < x; i++) {
+            cartes.add(pioche.remove(0));
+        }
         return cartes;
     }
 

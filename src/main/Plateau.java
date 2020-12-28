@@ -268,7 +268,6 @@ public class Plateau {
         }
     }
 
-    //TODO Ajouter une méthode qui permet de remplacer de prendre puis remplacer le wagon visible
     public Wagon saisieVisible(Boolean locomotiveTiree) {
         int indice = 0;
         for (Wagon wagon : wagonVisible) {
@@ -294,6 +293,14 @@ public class Plateau {
                     break;
             }
         }
+    }
+    /**
+     * Permet de piocher la carte {indice} dans les cartes visibles
+     * et de l'ajouter au cartes wagon du joueur
+     */
+    public void piocheWagonVisible(int indice) {
+        joueurs.get(joueurActuel).addWagon(wagonVisible.remove(indice));
+        wagonVisible.addAll(piocherWagon(1));
     }
 
     public ArrayList<Integer> saisieDestination() {
