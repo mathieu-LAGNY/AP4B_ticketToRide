@@ -89,7 +89,7 @@ public class Joueur {
      *
      * Et le joueur a terminé son tour
      */
-    public void playTurn() {
+    public void playTurn() throws Exception {
         // choix prend la valeur 0 dans le cas où le joueur s'est trompé dans ses actions
         // par exemple s'il annonce acheter une route sans avoir les cartes wagon nécessaires
         int choix = 0;
