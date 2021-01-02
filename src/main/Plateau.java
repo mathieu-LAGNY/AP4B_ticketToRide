@@ -1,6 +1,9 @@
 package main;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -31,7 +34,7 @@ public class Plateau {
      *
      * @param nomJoueurs liste des noms des joueurs qui participent à la partie.
      */
-    public Plateau(String[] nomJoueurs, String[] couleurs) {
+    public Plateau(String[] nomJoueurs, String[] couleurs) throws IOException{
         joueurActuel = 0;
         int nbJoueurs = nomJoueurs.length;
 
@@ -368,10 +371,12 @@ public class Plateau {
      *
      * @return Un entier entre 0 et 5. 0 correspond à un tirage du deck et les entiers de 1 à 5 correspondent au tirage de la nième carte visible
      */
-    public int saisiePiocheVisible() {
+    public int saisiePiocheVisible() throws IOException {
         while (true) {
             System.out.println("Prendre une carte de la pioche [1] ou une carte visible [2] ?");
-            String choix = System.console().readLine();
+            InputStreamReader streamReader = new InputStreamReader(System.in);
+            BufferedReader bufferedReader = new BufferedReader(streamReader);
+            String choix = bufferedReader.readLine();
             switch (choix) {
                 case "1":
                     //Note : Lorsqu'on pioche, il n'y a pas à vérifier si la carte pioché est une locomotive.
@@ -390,7 +395,7 @@ public class Plateau {
      *
      * @return un entier correspondant à la nième carte choisie
      */
-    public int saisieVisible() {
+    public int saisieVisible() throws IOException {
         int indice = 0;
         for (Wagon wagon : wagonVisible) {
             String string = String.format("[%d] %s", indice, wagonVisible);
@@ -398,7 +403,9 @@ public class Plateau {
         }
         while (true) {
             System.out.println("Choisir le numéro de la carte à tirer");
-            String choix = System.console().readLine();
+            InputStreamReader streamReader = new InputStreamReader(System.in);
+            BufferedReader bufferedReader = new BufferedReader(streamReader);
+            String choix = bufferedReader.readLine();
             switch (choix) {
                 case "1":
                     return 1;
@@ -432,26 +439,25 @@ public class Plateau {
      *
      * @return Tableau d'indices des cartes destination non choisies
      */
-    public ArrayList<Integer> saisieDestination() {
-        ArrayList<Integer> tabIndice = new ArrayList<>();
-        tabIndice.add(1);
-        tabIndice.add(2);
-        tabIndice.add(3);
+    public ArrayList<Integer> saisieDestination() throws IOException {
+        ArrayList<Integer> indicesARetirer = new ArrayList<>();
         while (true) {
             System.out.println("Saisir une par une les cartes destination à enlever, puis saisir \"V\" pour valider");
-            String choix = System.console().readLine();
+            InputStreamReader streamReader = new InputStreamReader(System.in);
+            BufferedReader bufferedReader = new BufferedReader(streamReader);
+            String choix = bufferedReader.readLine();
             switch (choix) {
                 case "1":
-                    tabIndice.removeIf(x -> (x == 1));
+                    indicesARetirer.add(1);
                     break;
                 case "2":
-                    tabIndice.removeIf(x -> (x == 2));
+                    indicesARetirer.add(2);
                     break;
                 case "3":
-                    tabIndice.removeIf(x -> (x == 3));
+                    indicesARetirer.add(3);
                     break;
                 case "V":
-                    return tabIndice;
+                    return indicesARetirer;
                 default:
                     System.out.println("Saisie incorrect");
                     break;
@@ -563,18 +569,22 @@ public class Plateau {
      * @param min nombre minimum de cartes à prendre (2 au début, 1 sinon)
      * @return liste des cartes destinaation choisies
      */
-    public ArrayList<Destination> choisirDest(int min) {
+    public ArrayList<Destination> choisirDest(int min) throws IOException{
         ArrayList<Destination> pioche = new ArrayList<>();
         for (int i = 0; i < 3; i++) pioche.add(pileDestination.remove(0));
         // affichage
         System.out.println("Cartes destination piochees");
-        for (Destination destination : pioche) {
-            System.out.println(destination + "\n");
+        for (int i=0; i<pioche.size() ; i++) {
+            System.out.println("[" + (i+1) + "]" + " " + pioche.get(i));
         }
         // retourne un tableau des indices non choisis
         // les cartes qu'on ne veut pas sont remises sous la pile de cartes destination
-        for (int indice : saisieDestination()) {
-            pileDestination.add(pioche.remove(indice - 1));
+        ArrayList<Integer> indicesARetirer = saisieDestination();
+        if(indicesARetirer.size()>0)
+        {
+            for (int indice : indicesARetirer) {
+                pileDestination.add(pioche.remove(indice - 1));
+            }
         }
         return pioche;
     }
