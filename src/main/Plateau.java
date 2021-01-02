@@ -240,6 +240,7 @@ public class Plateau {
                 new Destination(PH02, IT44, 8),
                 new Destination(SY41, AP4A, 7)));
         // initialisation deckWagon
+        // TODO Ajouter l'initialisation des deckWagon
         // Question définir 12 fois un wagon de couleur X ou une seule fois et l'utiliser 12 ?
         // Création des joueurs
         joueurs = new ArrayList<>(nbJoueurs);
@@ -251,7 +252,11 @@ public class Plateau {
         wagonVisible = piocherWagon(5);
     }
 
-    public Wagon saisiePiocheVisible(Boolean locomotiveTiree) {
+    /**
+     * Permet de saisir le choix entre piocher une carte wagon du deck ou piocher une des 5 cartes wagons visible
+     * @return Une carte wagon du deck ou bien une carte wagon parmis celles qui sont visibles
+     */
+    public Wagon saisiePiocheVisible() {
         while (true) {
             System.out.println("Prendre une carte de la pioche [1] ou une carte visible [2] ?");
             String choix = System.console().readLine();
@@ -260,7 +265,7 @@ public class Plateau {
                     //Note : Lorsqu'on pioche, il n'y a pas à vérifier si la carte pioché est une locomotive.
                     return this.piocherWagon(1).get(1);
                 case "2":
-                    return saisieVisible(locomotiveTiree);
+                    return saisieVisible();
                 default:
                     System.out.println("Choix incorrect");
                     break;
@@ -268,7 +273,11 @@ public class Plateau {
         }
     }
 
-    public Wagon saisieVisible(Boolean locomotiveTiree) {
+    /**
+     * Permet de saisir le numéro de la carte wagon à piocher parmis les cartes visible
+     * @return La nième carte wagon visible par rapport à la saisie de l'utilisateur
+     */
+    public Wagon saisieVisible() {
         int indice = 0;
         for (Wagon wagon : wagonVisible) {
             String string = String.format("[%d] %s", indice, wagonVisible);
@@ -279,15 +288,15 @@ public class Plateau {
             String choix = System.console().readLine();
             switch (choix) {
                 case "1":
-                    System.out.println(wagonVisible.get(1).getClass());
+                    piocheWagonVisible(1);
                 case "2":
-                    System.out.println(wagonVisible.get(2).getClass());
+                    piocheWagonVisible(2);
                 case "3":
-                    System.out.println(wagonVisible.get(3).getClass());
+                    piocheWagonVisible(3);
                 case "4":
-                    System.out.println(wagonVisible.get(4).getClass());
+                    piocheWagonVisible(4);
                 case "5":
-                    System.out.println(wagonVisible.get(5).getClass());
+                    piocheWagonVisible(5);
                 default:
                     System.out.println("Choix incorrect");
                     break;
@@ -304,6 +313,10 @@ public class Plateau {
         return wagon;
     }
 
+    /**
+     * Permet de saisir le(s) numéro(s) de(s) la carte(s) destination que l'on ne souhaite pas garder
+     * @return Tableau d'indices des cartes destination non choisies
+     */
     public ArrayList<Integer> saisieDestination() {
         ArrayList<Integer> tabIndice = new ArrayList<>();
         tabIndice.add(1);
@@ -331,6 +344,10 @@ public class Plateau {
         }
     }
 
+    /**
+     * Permet de saisir le nom d'une route
+     * @return Un Arraylist qui contient deux strings qui correspond à une route
+     */
     public ArrayList<String> saisieRoute(){
         while (true) {
             System.out.println("Saisir les deux routes en séparant par un espace (insensible à la case)");
@@ -375,12 +392,15 @@ public class Plateau {
      */
     public ArrayList<Wagon> choisirWagon() {
         ArrayList<Wagon> pioche = new ArrayList<>();
-        // saisie
+        Wagon carte;
         // pioche dans le deck ou dans les cartes visibles
-        //pioche.add(carte);
-        // saisie
-        // pioche dans le deck ou dans les cartes visibles
-        //pioche.add(carte);
+        carte = saisiePiocheVisible();
+        pioche.add(carte);
+        // Deuxième tirage
+        //On observe si le type de la première carte tirée est Locomotive si c'est le cas le tour se termine
+        //TODO Ajouter une vérification de la première carte tirée, cela nécessite d'avoir un Attribut pour la classe Wagon qui indique si on a affaire a une locomotive
+        carte = saisiePiocheVisible();
+        pioche.add(carte);
         return pioche;
     }
 
@@ -414,8 +434,9 @@ public class Plateau {
      */
     public Route choisirRoute() {
         // choix
+        ArrayList<String> choixRoute = saisieRoute(); //choixRoute contient le choix de la route au format (villeA, villeB)
         // appel à acheterRoute (les arguments peuvent être modifiés en fonction de ce qui nous arrange)
-        Route route = acheterRoute("UVA", "UVB"); // patron
+        Route route = acheterRoute(choixRoute.get(0), choixRoute.get(1)); // patron
         return route;
     }
 
@@ -536,5 +557,11 @@ public class Plateau {
         texte += "\nRoutes libres\n";
         for (Route route : listeRoute) texte += route + "\n";
         return texte;
+    }
+
+    public static void main(String[] args)
+    {
+        Plateau plateau = new Plateau(new String[]{"a","b","c"}, new String[]{"rouge", "vert", "bleu"});
+        plateau.run();
     }
 }
