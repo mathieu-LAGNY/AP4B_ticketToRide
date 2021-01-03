@@ -1,6 +1,9 @@
 package main;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -24,7 +27,7 @@ public class Plateau {
      *
      * @param nomJoueurs liste des noms des joueurs qui participent à la partie.
      */
-    public Plateau(String[] nomJoueurs, String[] couleurs) {
+    public Plateau(String[] nomJoueurs, String[] couleurs) throws IOException{
         joueurActuel = 0;
         int nbJoueurs = nomJoueurs.length;
 
@@ -233,12 +236,123 @@ public class Plateau {
                 new Destination(PH02, IT44, 8),
                 new Destination(SY41, AP4A, 7)));
         // initialisation deckWagon
-        // TODO Ajouter l'initialisation des deckWagon
-        // Question définir 12 fois un wagon de couleur X ou une seule fois et l'utiliser 12 ?
+        deckWagon = new Deck<>(new ArrayList<>(Arrays.asList(
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(BLUE),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(RED),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(YELLOW),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(GREEN),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(PINK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(BLACK),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(WHITE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                new Wagon(ORANGE),
+                //Locomotives en couleurs GRAY
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY),
+                new Wagon(GRAY)
+                )));
         // Création des joueurs
         joueurs = new ArrayList<>(nbJoueurs);
         int i = 0;
-        for (String nomJoueur : nomJoueurs){
+        for (String nomJoueur : nomJoueurs) {
             joueurs.add(new Joueur(nomJoueur, this, Color.getColor(couleurs[i]))); // a tester
             i++;
         }
@@ -253,17 +367,20 @@ public class Plateau {
     }
 
     /**
-     * Permet de choisir entre piocher une carte wagon du deck ou piocher une des 5 cartes wagons visible
-     * @return Une carte wagon du deck ou bien une carte wagon parmi celles qui sont visibles
+     * Permet de saisir le choix entre piocher une carte wagon du deck ou piocher une des 5 cartes wagons visible
+     *
+     * @return Un entier entre 0 et 5. 0 correspond à un tirage du deck et les entiers de 1 à 5 correspondent au tirage de la nième carte visible
      */
-    public Wagon saisiePiocheVisible() {
+    public int saisiePiocheVisible() throws IOException {
         while (true) {
             System.out.println("Prendre une carte de la pioche [1] ou une carte visible [2] ?");
-            String choix = System.console().readLine();
+            InputStreamReader streamReader = new InputStreamReader(System.in);
+            BufferedReader bufferedReader = new BufferedReader(streamReader);
+            String choix = bufferedReader.readLine();
             switch (choix) {
                 case "1":
                     //Note : Lorsqu'on pioche, il n'y a pas à vérifier si la carte pioché est une locomotive.
-                    return this.piocherWagon(1).get(1);
+                    return 0;
                 case "2":
                     return saisieVisible();
                 default:
@@ -274,10 +391,11 @@ public class Plateau {
     }
 
     /**
-     * Permet de saisir le numéro de la carte wagon à piocher parmi les cartes visible
-     * @return La nième carte wagon visible par rapport à la saisie de l'utilisateur
+     * Permet de saisir le numéro de la carte wagon à piocher parmis les cartes visible
+     *
+     * @return un entier correspondant à la nième carte choisie
      */
-    public Wagon saisieVisible() {
+    public int saisieVisible() throws IOException {
         int indice = 0;
         for (Wagon wagon : wagonVisible) {
             String string = String.format("[%d] %s", indice, wagonVisible);
@@ -285,58 +403,61 @@ public class Plateau {
         }
         while (true) {
             System.out.println("Choisir le numéro de la carte à tirer");
-            String choix = System.console().readLine();
+            InputStreamReader streamReader = new InputStreamReader(System.in);
+            BufferedReader bufferedReader = new BufferedReader(streamReader);
+            String choix = bufferedReader.readLine();
             switch (choix) {
                 case "1":
-                    return piocheWagonVisible(1);
+                    return 1;
                 case "2":
-                    return piocheWagonVisible(2);
+                    return 2;
                 case "3":
-                    return piocheWagonVisible(3);
+                    return 3;
                 case "4":
-                    return piocheWagonVisible(4);
+                    return 4;
                 case "5":
-                    return piocheWagonVisible(5);
+                    return 5;
                 default:
                     System.out.println("Choix incorrect");
                     break;
             }
         }
     }
+
     /**
      * Permet de piocher la carte {indice} dans les cartes visibles
      * la renvoie et complète les cartes wagon visibles
      */
     public Wagon piocheWagonVisible(int indice) {
-        Wagon wagon = wagonVisible.remove(indice-1);
+        Wagon wagon = wagonVisible.remove(indice - 1);
         wagonVisible.addAll(piocherWagon(1));
         return wagon;
     }
 
     /**
      * Permet de saisir le(s) numéro(s) de(s) la carte(s) destination que l'on ne souhaite pas garder
+     *
      * @return Tableau d'indices des cartes destination non choisies
      */
-    public ArrayList<Integer> saisieDestination() {
-        ArrayList<Integer> tabIndice = new ArrayList<>();
-        tabIndice.add(1);
-        tabIndice.add(2);
-        tabIndice.add(3);
+    public ArrayList<Integer> saisieDestination() throws IOException {
+        ArrayList<Integer> indicesARetirer = new ArrayList<>();
         while (true) {
             System.out.println("Saisir une par une les cartes destination à enlever, puis saisir \"V\" pour valider");
-            String choix = System.console().readLine();
+            InputStreamReader streamReader = new InputStreamReader(System.in);
+            BufferedReader bufferedReader = new BufferedReader(streamReader);
+            String choix = bufferedReader.readLine();
             switch (choix) {
                 case "1":
-                    tabIndice.removeIf(x -> (x==1));
+                    indicesARetirer.add(1);
                     break;
                 case "2":
-                    tabIndice.removeIf(x -> (x==2));
+                    indicesARetirer.add(2);
                     break;
                 case "3":
-                    tabIndice.removeIf(x -> (x==3));
+                    indicesARetirer.add(3);
                     break;
                 case "V":
-                    return tabIndice;
+                    return indicesARetirer;
                 default:
                     System.out.println("Saisie incorrect");
                     break;
@@ -387,16 +508,54 @@ public class Plateau {
      *
      * @return liste des cartes wagon piochées
      */
-    public ArrayList<Wagon> choisirWagon() {
+    public ArrayList<Wagon> choisirWagon() throws Exception {
         ArrayList<Wagon> pioche = new ArrayList<>();
+        Boolean locomotiveVisibleTiree = false; //Booléen indiquant si une locomotive visible à été tirée
         Wagon carte;
         // pioche dans le deck ou dans les cartes visibles
-        carte = saisiePiocheVisible();
+        int choix = saisiePiocheVisible();
+        switch(choix)
+        {
+            case 0:
+                carte = piocherWagon(1).get(1);
+                break;
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                carte = piocheWagonVisible(choix);
+                if(carte.getCouleur() == gray) //Si la carte visible tirée est une locomotive
+                    locomotiveVisibleTiree = true;
+                break;
+            default:
+                throw new Exception("Choix Wagon incorrect");
+        }
+
         pioche.add(carte);
         // Deuxième tirage
-        //On observe si le type de la première carte tirée est Locomotive si c'est le cas le tour se termine
-        //TODO Ajouter une vérification de la première carte tirée, cela nécessite d'avoir un Attribut pour la classe Wagon qui indique si on a affaire a une locomotive
-        carte = saisiePiocheVisible();
+        // On ne peut tirer une deuxième carte Wagon que si la première n'est pas une locomotive qui était visible
+        if(!locomotiveVisibleTiree)
+        {
+            choix = saisiePiocheVisible();
+            switch(choix)
+            {
+                case 0:
+                    carte = piocherWagon(1).get(1);
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    carte = piocheWagonVisible(choix);
+                    if(carte.getCouleur() == gray) //Si la carte visible tirée est une locomotive
+                        locomotiveVisibleTiree = true;
+                    break;
+                default:
+                    throw new Exception("Choix Wagon incorrect");
+            }
+        }
         pioche.add(carte);
         return pioche;
     }
@@ -408,18 +567,22 @@ public class Plateau {
      * @param min nombre minimum de cartes à prendre (2 au début, 1 sinon)
      * @return liste des cartes destinaation choisies
      */
-    public ArrayList<Destination> choisirDest(int min) {
+    public ArrayList<Destination> choisirDest(int min) throws IOException{
         ArrayList<Destination> pioche = new ArrayList<>();
         for (int i = 0; i < 3; i++) pioche.add(pileDestination.remove(0));
         // affichage
         System.out.println("Cartes destination piochees");
-        for (Destination destination : pioche) {
-            System.out.println(destination + "\n");
+        for (int i=0; i<pioche.size() ; i++) {
+            System.out.println("[" + (i+1) + "]" + " " + pioche.get(i));
         }
         // retourne un tableau des indices non choisis
         // les cartes qu'on ne veut pas sont remises sous la pile de cartes destination
-        for (int indice: saisieDestination()) {
-            pileDestination.add(pioche.remove(indice-1));
+        ArrayList<Integer> indicesARetirer = saisieDestination();
+        if(indicesARetirer.size()>0)
+        {
+            for (int indice : indicesARetirer) {
+                pileDestination.add(pioche.remove(indice - 1));
+            }
         }
         return pioche;
     }
@@ -500,7 +663,7 @@ public class Plateau {
      * terminée. Lorsque la partie se termine, un dernier tour est effectuée puis
      * la méthode affiche le score final
      */
-    public void run() {
+    public void run() throws Exception{
         while (!estFini()) {
             // joue le tour du joueur courant
             getJoueurActuel().playTurn();
@@ -558,9 +721,8 @@ public class Plateau {
         return texte;
     }
 
-    public static void main(String[] args)
-    {
-        Plateau plateau = new Plateau(new String[]{"a","b","c"}, new String[]{"rouge", "vert", "bleu"});
+    public static void main(String[] args) throws Exception{
+        Plateau plateau = new Plateau(new String[]{"a", "b", "c"}, new String[]{"rouge", "vert", "bleu"});
         plateau.run();
     }
 }

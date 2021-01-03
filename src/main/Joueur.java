@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -22,7 +23,7 @@ public class Joueur {
      * @param nomJoueur le nom du joueur
      * @param plateau   le plateau de la partie en cours
      */
-    public Joueur(String nomJoueur, Plateau plateau, Color couleur) {
+    public Joueur(String nomJoueur, Plateau plateau, Color couleur) throws IOException {
         this.nomJoueur = nomJoueur;
         this.plateau = plateau;
         this.couleur = null;
@@ -128,7 +129,7 @@ public class Joueur {
      *
      * Et le joueur a terminé son tour
      */
-    public void playTurn() {
+    public void playTurn() throws Exception {
         // choix prend la valeur 0 dans le cas où le joueur s'est trompé dans ses actions
         // par exemple s'il annonce acheter une route sans avoir les cartes wagon nécessaires
         int choix = 0;
