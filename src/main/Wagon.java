@@ -11,10 +11,6 @@ public class Wagon extends Carte {
         this.couleur = couleur;
     }
 
-    public boolean equals(Wagon wagon) {
-        return wagon.couleur == this.couleur;
-    }
-
     public Color getCouleur() {
         return couleur;
     }
@@ -22,9 +18,5 @@ public class Wagon extends Carte {
     @Override
     public String toString() {
         return this.couleur.toString();
-    }
-
-    public Color getCouleur() {
-        return couleur;
     }
 }
