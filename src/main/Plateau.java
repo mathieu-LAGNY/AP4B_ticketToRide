@@ -18,13 +18,6 @@ public class Plateau {
     private ArrayList<Route> listeRoute;
     private ArrayList<UV> listeUV;
 
-    /*
-    /!\ Ajouter une méthode pour permettre les saisies :
-    - Pour l'action de Pioche
-    - Pour l'action de destination (+ méthode + affichage)
-    - Pour l'action d'achat d'une Route
-     */
-
     /**
      * /!\ Ajouter initalisation de deckWagon
      * Constructeur
@@ -253,8 +246,15 @@ public class Plateau {
     }
 
     /**
-     * Permet de saisir le choix entre piocher une carte wagon du deck ou piocher une des 5 cartes wagons visible
-     * @return Une carte wagon du deck ou bien une carte wagon parmis celles qui sont visibles
+     * @return le joueur dont c'est le tour
+     */
+    public Joueur getJoueurActuel() {
+        return joueurs.get(joueurActuel);
+    }
+
+    /**
+     * Permet de choisir entre piocher une carte wagon du deck ou piocher une des 5 cartes wagons visible
+     * @return Une carte wagon du deck ou bien une carte wagon parmi celles qui sont visibles
      */
     public Wagon saisiePiocheVisible() {
         while (true) {
@@ -274,7 +274,7 @@ public class Plateau {
     }
 
     /**
-     * Permet de saisir le numéro de la carte wagon à piocher parmis les cartes visible
+     * Permet de saisir le numéro de la carte wagon à piocher parmi les cartes visible
      * @return La nième carte wagon visible par rapport à la saisie de l'utilisateur
      */
     public Wagon saisieVisible() {
@@ -288,15 +288,15 @@ public class Plateau {
             String choix = System.console().readLine();
             switch (choix) {
                 case "1":
-                    piocheWagonVisible(1);
+                    return piocheWagonVisible(1);
                 case "2":
-                    piocheWagonVisible(2);
+                    return piocheWagonVisible(2);
                 case "3":
-                    piocheWagonVisible(3);
+                    return piocheWagonVisible(3);
                 case "4":
-                    piocheWagonVisible(4);
+                    return piocheWagonVisible(4);
                 case "5":
-                    piocheWagonVisible(5);
+                    return piocheWagonVisible(5);
                 default:
                     System.out.println("Choix incorrect");
                     break;
@@ -346,19 +346,16 @@ public class Plateau {
 
     /**
      * Permet de saisir le nom d'une route
-     * @return Un Arraylist qui contient deux strings qui correspond à une route
+     * @return la route dont on a saisit le nom
      */
-    public ArrayList<String> saisieRoute(){
+    public Route saisieRoute(){
         while (true) {
-            System.out.println("Saisir les deux routes en séparant par un espace (insensible à la case)");
+            System.out.println("Copier le nom de la route que vous souhaitez acheter");
             String choix = System.console().readLine();
-            String regex = "/[A-Z] [A-Z]/i";
-            if(Pattern.matches(regex, choix))
-            {
-                ArrayList<String> choixRoute = new ArrayList<>(Arrays.asList(choix.split(" ")));
-                return choixRoute;
-            }
-            else{
+            Route route = acheterRoute(choix);
+            if (route != null) {
+                return route;
+            } else {
                 System.out.println("Saisie incorrect");
             }
         }
@@ -428,16 +425,38 @@ public class Plateau {
     }
 
     /**
-     * /!\ Ajouter le choix : affichage + saisie
-     *
      * @return route choisie, null si la route n'est pas valide
      */
     public Route choisirRoute() {
         // choix
-        ArrayList<String> choixRoute = saisieRoute(); //choixRoute contient le choix de la route au format (villeA, villeB)
-        // appel à acheterRoute (les arguments peuvent être modifiés en fonction de ce qui nous arrange)
-        Route route = acheterRoute(choixRoute.get(0), choixRoute.get(1)); // patron
-        return route;
+        Route routeChoisie = saisieRoute();
+        Joueur joueur = getJoueurActuel();
+        if (joueur.routeAchetable(routeChoisie)) {
+            return routeChoisie;
+        }
+        return null;
+    }
+
+    /**
+     * /!\ Penser aux routes doubles
+     * Un joueur achète une route entre deux villes, la route doit être libre
+     * (dans listeRoute) et le joueur doit avoir les cartes wagon correspondantes.
+     * Si l'action est valide on renvoie la route, sinon null;
+     */
+    private Route acheterRoute(String choix) {
+        String regex = "[A-Z]{2}[0-9]{2}-[A-Z]{2}[0-9]{2}";
+        Route routeChoisie = null; // patron
+        if(Pattern.matches(regex, choix))
+        {
+            for (Route route: this.listeRoute) {
+                if (route.getName().equals(choix)) {
+                    routeChoisie = route;
+                }
+            }
+        }
+        if (routeChoisie == null) return null;
+        if (getJoueurActuel().routeAchetable(routeChoisie)) return routeChoisie;
+        else return null;
     }
 
     /**
@@ -475,28 +494,8 @@ public class Plateau {
     }
 
     /**
-     * /!\ Penser aux routes doubles
-     * <p>
-     * Un joueur achète une route entre deux villes, la route doit être libre
-     * (dans listeRoute) et le joueur doit avoir les cartes wagon correspondantes.
-     * Si l'action est valide on renvoie la route, sinon null;
-     */
-    private Route acheterRoute(String villeA, String villeB) {
-        boolean valide = true; // patron
-        Route route = null; // patron
-        // verification de la validité et on recupere l'indice de la route dans la liste
-        int indice = 0; // patron
-
-        if (valide) {
-            // retire la route de celles disponible
-            route = listeRoute.get(indice);
-        }
-        return route;
-    }
-
-    /**
      * Boucle d'exécution d'une partie.
-     * <p>
+     *
      * Cette méthode exécute les tours des joueurs jusqu'à ce que la partie soit
      * terminée. Lorsque la partie se termine, un dernier tour est effectuée puis
      * la méthode affiche le score final
@@ -504,7 +503,7 @@ public class Plateau {
     public void run() {
         while (!estFini()) {
             // joue le tour du joueur courant
-            joueurs.get(joueurActuel).playTurn();
+            getJoueurActuel().playTurn();
             // passe au joueur suivant
             joueurActuel += 1;
             if (joueurActuel >= joueurs.size()) {
@@ -514,7 +513,7 @@ public class Plateau {
         // le dernier tour avant la fin
         for (int i = 0; i < joueurs.size(); i++) {
             // joue le tour du joueur courant
-            joueurs.get(joueurActuel).playTurn();
+            getJoueurActuel().playTurn();
             // passe au joueur suivant
             joueurActuel += 1;
             if (joueurActuel >= joueurs.size()) {
@@ -551,7 +550,7 @@ public class Plateau {
      */
     @Override
     public String toString() {
-        String texte = joueurs.get(joueurActuel) + "\n";
+        String texte = getJoueurActuel() + "\n";
         texte += "\nPioche\n";
         for (Wagon wagon : wagonVisible) texte += wagon;
         texte += "\nRoutes libres\n";

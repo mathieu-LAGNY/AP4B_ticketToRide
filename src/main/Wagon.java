@@ -13,6 +13,10 @@ public class Wagon extends Carte {
         return wagon.couleur == this.couleur;
     }
 
+    public Color getCouleur() {
+        return couleur;
+    }
+
     @Override
     public String toString() {
         return this.couleur.toString();

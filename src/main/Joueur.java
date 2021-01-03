@@ -56,9 +56,26 @@ public class Joueur {
         }
         return total;
     }
+
+    /**
+     * Verfie si une route est achetable par le joueur avec ses cartes wagon actuelles
+     * @param route a tester
+     * @return true si la route peut être achetée
+     */
+    public boolean routeAchetable(Route route) {
+        int nbWagon = 0;
+        Color routeCouleur = route.getRouteCouleur();
+        for (Wagon wagon: mainWagon) {
+            if (wagon.getCouleur().equals(routeCouleur) || wagon.getCouleur().equals(Color.GRAY)) {
+                nbWagon++;
+            }
+        }
+        return route.getLongueur() <= nbWagon;
+    }
     
     /**
      * Fonction qui correspond à l'ajout d'une route valide
+     * Enlève de ses cartes Wagon le coût correspondant
      * Ajoute les points correspondant à la longueur de la route au score du joueur,
      * décrémente le nombre de pion wagon de la longueur de la route et
      * ajoute la route à la liste de routes du joueur
@@ -66,6 +83,28 @@ public class Joueur {
      *  */
     public void ajouteRoute(Route route) {
     	int longueurRoute = route.getLongueur();
+    	int nbWagon = route.getLongueur();
+    	Color routeCouleur = route.getRouteCouleur();
+        int i=0;
+        // On enlève autant de carte de la couleur que possible
+        while (nbWagon > 0 || i < mainWagon.size()) {
+            if (mainWagon.get(i).getCouleur().equals(routeCouleur)) {
+                nbWagon--;
+                mainWagon.remove(i);
+            } else {
+                i++;
+            }
+        }
+        // S'il n'y en a pas assez on complète avec des locomotives
+        i = 0;
+        while (nbWagon > 0 || i < mainWagon.size()) {
+            if (mainWagon.get(i).getCouleur().equals(Color.GRAY)) {
+                nbWagon--;
+                mainWagon.remove(i);
+            } else {
+                i++;
+            }
+        }
     	ArrayList<Integer> liste = new ArrayList<>(Arrays.asList(0, 1, 2, 4, 7, 10, 15));
         if (longueurRoute < liste.size()) { // facultatif on part du principe que la route est créée de la bonne taille
             this.score += liste.get(longueurRoute);
