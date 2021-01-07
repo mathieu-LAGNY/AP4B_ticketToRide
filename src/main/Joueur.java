@@ -1,7 +1,9 @@
 package main;
 
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -132,8 +134,14 @@ public class Joueur {
     public void playTurn() throws Exception {
         // choix prend la valeur 0 dans le cas où le joueur s'est trompé dans ses actions
         // par exemple s'il annonce acheter une route sans avoir les cartes wagon nécessaires
+
         int choix = 0;
         while (choix == 0) {
+            String stringTour = String.format("Tour de %s :\n[1] Pioche wagon deck/visible\n[2] Destinations\n[3] Routes", this.nomJoueur);
+            System.out.println(stringTour);
+            InputStreamReader streamReader = new InputStreamReader(System.in);
+            BufferedReader bufferedReader = new BufferedReader(streamReader);
+            choix = Integer.parseInt(bufferedReader.readLine());
             // choix de l'action réalisée (1, 2 ou 3)
             // 1. (Pioche)
             if (choix == 1) {

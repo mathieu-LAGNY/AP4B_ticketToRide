@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import static java.awt.Color.*;
@@ -396,10 +397,12 @@ public class Plateau {
      * @return un entier correspondant à la nième carte choisie
      */
     public int saisieVisible() throws IOException {
-        int indice = 0;
+        int indice = 1;
         for (Wagon wagon : wagonVisible) {
-            String string = String.format("[%d] %s", indice, wagonVisible);
+
+            String string = String.format("[%d] %s", indice, wagon);
             System.out.println(string);
+            indice++;
         }
         while (true) {
             System.out.println("Choisir le numéro de la carte à tirer");
@@ -439,13 +442,17 @@ public class Plateau {
      *
      * @return Tableau d'indices des cartes destination non choisies
      */
-    public ArrayList<Integer> saisieDestination() throws IOException {
+    public ArrayList<Integer> saisieDestination(int min) throws IOException {
         ArrayList<Integer> indicesARetirer = new ArrayList<>();
         while (true) {
-            System.out.println("Saisir une par une les cartes destination à enlever, puis saisir \"V\" pour valider");
+            if(indicesARetirer.size() >= (3 - min))
+            {
+                return indicesARetirer;
+            }
+            System.out.println("Saisir une par une les cartes destination à enlever, puis saisir \"v\" pour valider");
             InputStreamReader streamReader = new InputStreamReader(System.in);
             BufferedReader bufferedReader = new BufferedReader(streamReader);
-            String choix = bufferedReader.readLine();
+            String choix = bufferedReader.readLine().toLowerCase(Locale.ROOT);
             switch (choix) {
                 case "1":
                     indicesARetirer.add(1);
@@ -456,7 +463,7 @@ public class Plateau {
                 case "3":
                     indicesARetirer.add(3);
                     break;
-                case "V":
+                case "v":
                     return indicesARetirer;
                 default:
                     System.out.println("Saisie incorrect");
@@ -469,10 +476,12 @@ public class Plateau {
      * Permet de saisir le nom d'une route
      * @return la route dont on a saisit le nom
      */
-    public Route saisieRoute(){
+    public Route saisieRoute() throws IOException {
         while (true) {
             System.out.println("Copier le nom de la route que vous souhaitez acheter");
-            String choix = System.console().readLine();
+            InputStreamReader streamReader = new InputStreamReader(System.in);
+            BufferedReader bufferedReader = new BufferedReader(streamReader);
+            String choix = bufferedReader.readLine();
             Route route = acheterRoute(choix);
             if (route != null) {
                 return route;
@@ -509,6 +518,7 @@ public class Plateau {
      * @return liste des cartes wagon piochées
      */
     public ArrayList<Wagon> choisirWagon() throws Exception {
+        System.out.println("### Choix Wagon ###");
         ArrayList<Wagon> pioche = new ArrayList<>();
         Boolean locomotiveVisibleTiree = false; //Booléen indiquant si une locomotive visible à été tirée
         Wagon carte;
@@ -577,7 +587,7 @@ public class Plateau {
         }
         // retourne un tableau des indices non choisis
         // les cartes qu'on ne veut pas sont remises sous la pile de cartes destination
-        ArrayList<Integer> indicesARetirer = saisieDestination();
+        ArrayList<Integer> indicesARetirer = saisieDestination(min);
         if(indicesARetirer.size()>0)
         {
             for (int indice : indicesARetirer) {
@@ -590,7 +600,7 @@ public class Plateau {
     /**
      * @return route choisie, null si la route n'est pas valide
      */
-    public Route choisirRoute() {
+    public Route choisirRoute() throws IOException {
         // choix
         Route routeChoisie = saisieRoute();
         Joueur joueur = getJoueurActuel();
