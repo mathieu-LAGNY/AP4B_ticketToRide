@@ -8,7 +8,11 @@ public class MainWindow {
 
     JFrame frame;
 
-    public MainWindow() {
+    public MainWindow(int typeWindow) {
+
+        int type = typeWindow;
+        JPanel panel;
+
         //Make sure we have nice window decorations. JFrame.setDefaultLookAndFeelDecorated(true);
         // Create and set up the window.
         frame = new JFrame("Ticket To UTBM");
@@ -17,9 +21,17 @@ public class MainWindow {
         frame.setLocationRelativeTo(null);
 
 
-        JPanel menuPanel = new MenuPanel();
+        if(type == 2)
+        {
+            panel = new GamePanel();
 
-        frame.getContentPane().add(menuPanel);
+        }
+        else{
+            panel = new MenuPanel();
+        }
+
+
+        frame.getContentPane().add(panel);
 
         frame.setVisible(true);
     }

@@ -475,13 +475,14 @@ public class Plateau {
         }
     }
 
-    public void saisieDestinationGraphique(int min, ArrayList<Destination> cartesDestination){
+    public ArrayList<Integer> saisieDestinationGraphique(int min, ArrayList<Destination> cartesDestination){
         ArrayList<JPanel> panelsDestination = new ArrayList<>();
         for(Destination carteDestination : cartesDestination)
         {
             panelsDestination.add(carteDestination.toPanel());
         }
         ChoicePanel cp = new ChoicePanel(panelsDestination);
+        return cp.getIndicesARetirer();
     }
 
     /**
@@ -597,12 +598,13 @@ public class Plateau {
         }
         // retourne un tableau des indices non choisis
         // les cartes qu'on ne veut pas sont remises sous la pile de cartes destination
-        saisieDestinationGraphique(min, pioche);
-        /*if (indicesARetirer.size() > 0) {
+        ArrayList<Integer> indicesARetirer = saisieDestinationGraphique(min, pioche);
+        if (indicesARetirer.size() > 0) {
             for (int indice : indicesARetirer) {
+                System.out.println(indice);
                 pileDestination.add(pioche.remove(indice - 1));
             }
-        }*/
+        }
         return pioche;
     }
 
