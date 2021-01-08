@@ -1,6 +1,6 @@
 package main;
 
-import java.awt.*;A
+import java.awt.*;
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class Plateau {
      *
      * @param nomJoueurs liste des noms des joueurs qui participent à la partie.
      */
-    public Plateau(String[] nomJoueurs, String[] couleurs) throws IOException{
+    public Plateau(String[] nomJoueurs, String[] couleurs) throws IOException {
         joueurActuel = 0;
         int nbJoueurs = nomJoueurs.length;
 
@@ -350,9 +350,9 @@ public class Plateau {
                 new Wagon(GRAY),
                 new Wagon(GRAY),
                 new Wagon(GRAY)
-                )));
+        )));
         // Affichage Interface
-        
+
         // Création des joueurs
         joueurs = new ArrayList<>(nbJoueurs);
         int i = 0;
@@ -362,116 +362,8 @@ public class Plateau {
         }
         wagonVisible = piocherWagon(5);
     }
-    public static void createAndShowGUI() {
-        //Make sure we have nice window decorations. JFrame.setDefaultLookAndFeelDecorated(true);
-//Create and set up the window.
-        JFrame frame = new JFrame("Ticket To UTBM");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(933, 700);
-        frame.setLocation(500, 500);
-        frame.setVisible(true);
-        JPanel panel = new JPanel();
-        JImagePanel carte = new JImagePanel("map.png");// Mettre emplacement ou nom de l'image si dans le même dossier que le code
-        //Centrer l'image
-        carte.setStretch(false);
-        panel.setLayout(new GridBagLayout());
-        JButton button;
-        GridBagConstraints c = new GridBagConstraints();
-        // Les cartes Wagons à séléctionner
-        JCheckBox carte1 = new JCheckBox("Carte1",false);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        c.gridx = 0;
-        c.gridy = 0;
-        panel.add(carte1, c);
 
-        JCheckBox carte2 = new JCheckBox("Carte2",false);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        c.gridx = 1;
-        c.gridy = 0;
-        panel.add(carte2, c);
 
-        JCheckBox carte3 = new JCheckBox("Carte3",false);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        c.gridx = 2;
-        c.gridy = 0;
-        panel.add(carte3, c);
-
-        JCheckBox carte4 = new JCheckBox("Carte4",false);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        c.gridx = 3;
-        c.gridy = 0;
-        panel.add(carte4, c);
-
-        JCheckBox carte5 = new JCheckBox("Carte5",false);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        c.gridx = 4;
-        c.gridy = 0;
-        panel.add(carte5, c);
-        //Les différents pioches
-        button = new JButton("Pioche Wagon");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        c.gridx = 5;
-        c.gridy = 0;
-        panel.add(button, c);
-
-        button = new JButton("Pioche destination");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        c.gridx = 6;
-        c.gridy = 0;
-        panel.add(button, c);
-        // Plateau
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 650;//make this component tall
-        c.weightx = 0.0;
-        c.gridwidth = 4;
-        c.gridx = 0;
-        c.gridy = 1;
-        panel.add(carte, c);
-        // Les cartes Destinations du joueur
-        JLabel carteDestination1 = new JLabel("Carte Dest 1");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 0;
-        c.weighty = 1.0;   //request any extra vertical space
-        c.insets = new Insets(10,0,0,0);  //top padding
-        c.gridx = 0;       //aligned with button 2
-        c.gridy = 2;       //third row
-        panel.add(carteDestination1, c);
-
-        JLabel carteDestination2 = new JLabel("Carte Dest 2");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weighty = 1.0;   //request any extra vertical space
-        c.insets = new Insets(10,0,0,0);  //top padding
-        c.gridx = 1;       //aligned with button 2
-        c.gridy = 2;       //third row
-        panel.add(carteDestination2, c);
-
-        JLabel carteDestination3 = new JLabel("Carte Dest 3");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weighty = 1.0;   //request any extra vertical space
-        c.insets = new Insets(10,0,0,0);  //top padding
-        c.gridx = 3;       //aligned with button 2
-        c.gridy = 2;       //third row
-        panel.add(carteDestination3, c);
-        // Prendre une route
-        button = new JButton("Prendre Route");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.ipady = 30;
-        c.weighty = 1.0;   //request any extra vertical space
-        //c.anchor = GridBagConstraints.PAGE_END; //bottom of space
-        c.insets = new Insets(10,0,0,0);  //top padding
-        c.gridx = 5;       //aligned with button 2
-        c.gridy = 2;       //third row
-        panel.add(button, c);
-
-        frame.getContentPane().add(panel);
-    }
     /**
      * @return le joueur dont c'est le tour
      */
@@ -557,8 +449,7 @@ public class Plateau {
     public ArrayList<Integer> saisieDestination(int min) throws IOException {
         ArrayList<Integer> indicesARetirer = new ArrayList<>();
         while (true) {
-            if(indicesARetirer.size() >= (3 - min))
-            {
+            if (indicesARetirer.size() >= (3 - min)) {
                 return indicesARetirer;
             }
             System.out.println("Saisir une par une les cartes destination à enlever, puis saisir \"v\" pour valider");
@@ -586,6 +477,7 @@ public class Plateau {
 
     /**
      * Permet de saisir le nom d'une route
+     *
      * @return la route dont on a saisit le nom
      */
     public Route saisieRoute() throws IOException {
@@ -636,8 +528,7 @@ public class Plateau {
         Wagon carte;
         // pioche dans le deck ou dans les cartes visibles
         int choix = saisiePiocheVisible();
-        switch(choix)
-        {
+        switch (choix) {
             case 0:
                 carte = piocherWagon(1).get(1);
                 break;
@@ -647,7 +538,7 @@ public class Plateau {
             case 4:
             case 5:
                 carte = piocheWagonVisible(choix);
-                if(carte.getCouleur() == gray) //Si la carte visible tirée est une locomotive
+                if (carte.getCouleur() == gray) //Si la carte visible tirée est une locomotive
                     locomotiveVisibleTiree = true;
                 break;
             default:
@@ -657,11 +548,9 @@ public class Plateau {
         pioche.add(carte);
         // Deuxième tirage
         // On ne peut tirer une deuxième carte Wagon que si la première n'est pas une locomotive qui était visible
-        if(!locomotiveVisibleTiree)
-        {
+        if (!locomotiveVisibleTiree) {
             choix = saisiePiocheVisible();
-            switch(choix)
-            {
+            switch (choix) {
                 case 0:
                     carte = piocherWagon(1).get(1);
                     break;
@@ -671,7 +560,7 @@ public class Plateau {
                 case 4:
                 case 5:
                     carte = piocheWagonVisible(choix);
-                    if(carte.getCouleur() == gray) //Si la carte visible tirée est une locomotive
+                    if (carte.getCouleur() == gray) //Si la carte visible tirée est une locomotive
                         locomotiveVisibleTiree = true;
                     break;
                 default:
@@ -689,19 +578,18 @@ public class Plateau {
      * @param min nombre minimum de cartes à prendre (2 au début, 1 sinon)
      * @return liste des cartes destinaation choisies
      */
-    public ArrayList<Destination> choisirDest(int min) throws IOException{
+    public ArrayList<Destination> choisirDest(int min) throws IOException {
         ArrayList<Destination> pioche = new ArrayList<>();
         for (int i = 0; i < 3; i++) pioche.add(pileDestination.remove(0));
         // affichage
         System.out.println("Cartes destination piochees");
-        for (int i=0; i<pioche.size() ; i++) {
-            System.out.println("[" + (i+1) + "]" + " " + pioche.get(i));
+        for (int i = 0; i < pioche.size(); i++) {
+            System.out.println("[" + (i + 1) + "]" + " " + pioche.get(i));
         }
         // retourne un tableau des indices non choisis
         // les cartes qu'on ne veut pas sont remises sous la pile de cartes destination
         ArrayList<Integer> indicesARetirer = saisieDestination(min);
-        if(indicesARetirer.size()>0)
-        {
+        if (indicesARetirer.size() > 0) {
             for (int indice : indicesARetirer) {
                 pileDestination.add(pioche.remove(indice - 1));
             }
@@ -731,9 +619,8 @@ public class Plateau {
     private Route acheterRoute(String choix) {
         String regex = "[A-Z]{2}[0-9]{2}-[A-Z]{2}[0-9]{2}";
         Route routeChoisie = null; // patron
-        if(Pattern.matches(regex, choix))
-        {
-            for (Route route: this.listeRoute) {
+        if (Pattern.matches(regex, choix)) {
+            for (Route route : this.listeRoute) {
                 if (route.getName().equals(choix)) {
                     routeChoisie = route;
                 }
@@ -780,12 +667,12 @@ public class Plateau {
 
     /**
      * Boucle d'exécution d'une partie.
-     *
+     * <p>
      * Cette méthode exécute les tours des joueurs jusqu'à ce que la partie soit
      * terminée. Lorsque la partie se termine, un dernier tour est effectuée puis
      * la méthode affiche le score final
      */
-    public void run() throws Exception{
+    public void run() throws Exception {
         while (!estFini()) {
             // joue le tour du joueur courant
             getJoueurActuel().playTurn();
@@ -843,8 +730,10 @@ public class Plateau {
         return texte;
     }
 
-    public static void main(String[] args) throws Exception{
-        Plateau plateau = new Plateau(new String[]{"a", "b", "c"}, new String[]{"rouge", "vert", "bleu"});
+    public static void main(String[] args) throws Exception {
+
+        MainWindow mainWindow = new MainWindow();
+        Plateau plateau = new Plateau(new String[]{"NomJoueur1", "NomJoueur2", "NomJoueur3"}, new String[]{"rouge", "vert", "bleu"});
         plateau.run();
     }
 }
