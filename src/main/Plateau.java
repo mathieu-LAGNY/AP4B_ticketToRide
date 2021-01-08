@@ -351,7 +351,17 @@ public class Plateau {
                 new Wagon(GRAY)
                 )));
         // Affichage Interface
-        public static void createAndShowGUI() {
+        
+        // Création des joueurs
+        joueurs = new ArrayList<>(nbJoueurs);
+        int i = 0;
+        for (String nomJoueur : nomJoueurs) {
+            joueurs.add(new Joueur(nomJoueur, this, Color.getColor(couleurs[i]))); // a tester
+            i++;
+        }
+        wagonVisible = piocherWagon(5);
+    }
+    public static void createAndShowGUI() {
         //Make sure we have nice window decorations. JFrame.setDefaultLookAndFeelDecorated(true);
 //Create and set up the window.
         JFrame frame = new JFrame("Ticket To UTBM");
@@ -460,17 +470,7 @@ public class Plateau {
         panel.add(button, c);
 
         frame.getContentPane().add(panel);
-            
-        // Création des joueurs
-        joueurs = new ArrayList<>(nbJoueurs);
-        int i = 0;
-        for (String nomJoueur : nomJoueurs) {
-            joueurs.add(new Joueur(nomJoueur, this, Color.getColor(couleurs[i]))); // a tester
-            i++;
-        }
-        wagonVisible = piocherWagon(5);
     }
-
     /**
      * @return le joueur dont c'est le tour
      */
