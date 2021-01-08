@@ -1,7 +1,8 @@
 package main;
 
+import main.menu.MenuPanel;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class MainWindow {
     public MainWindow() {
