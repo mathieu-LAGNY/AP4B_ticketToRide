@@ -1,6 +1,6 @@
 package main;
 
-import java.awt.*;A
+import java.awt.*;
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Stack;
 import java.util.regex.Pattern;
 
 import static java.awt.Color.*;
@@ -632,7 +633,7 @@ public class Plateau {
     public ArrayList<Wagon> choisirWagon() throws Exception {
         System.out.println("### Choix Wagon ###");
         ArrayList<Wagon> pioche = new ArrayList<>();
-        Boolean locomotiveVisibleTiree = false; //Booléen indiquant si une locomotive visible à été tirée
+        boolean locomotiveVisibleTiree = false; //Booléen indiquant si une locomotive visible à été tirée
         Wagon carte;
         // pioche dans le deck ou dans les cartes visibles
         int choix = saisiePiocheVisible();
@@ -749,7 +750,9 @@ public class Plateau {
      * à la fin de la partie et l'ajoute à leur score.
      */
     private void totalDest() {
-
+        for (Joueur joueur: joueurs) {
+            joueur.totalDestJoueur();
+        }
     }
 
     /**
