@@ -1,5 +1,7 @@
 package main.menu;
 
+import main.Jeu;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
@@ -21,9 +23,16 @@ public class MenuListener implements java.awt.event.ActionListener {
                 menuPanel.updateNbJoueurs();
                 break;
             case "jouer":
-                for(JTextField txtFldNomJoueur : menuPanel.getTxtFldNomJoueurs())
+                String[] nomJoueurs = new String[menuPanel.getNbJoueurs()];
+                String[] couleurs = new String[]{"red", "blue", "green", "yellow", "pink"};
+                for(int i = 0; i < menuPanel.getTxtFldNomJoueurs().size(); i++)
                 {
-                    System.out.println(txtFldNomJoueur.getText());
+                    nomJoueurs[i] = menuPanel.getTxtFldNomJoueurs().get(i).getText();
+                }
+                try {
+                    Jeu.initPlateau(nomJoueurs, couleurs);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
                 }
         }
     }

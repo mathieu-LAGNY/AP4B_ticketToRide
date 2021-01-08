@@ -352,7 +352,6 @@ public class Plateau {
                 new Wagon(GRAY),
                 new Wagon(GRAY)
         )));
-        // Affichage Interface
 
         // Création des joueurs
         joueurs = new ArrayList<>(nbJoueurs);
@@ -476,6 +475,15 @@ public class Plateau {
         }
     }
 
+    public void saisieDestinationGraphique(int min, ArrayList<Destination> cartesDestination){
+        ArrayList<JPanel> panelsDestination = new ArrayList<>();
+        for(Destination carteDestination : cartesDestination)
+        {
+            panelsDestination.add(carteDestination.toPanel());
+        }
+        ChoicePanel cp = new ChoicePanel(panelsDestination);
+    }
+
     /**
      * Permet de saisir le nom d'une route
      *
@@ -589,12 +597,12 @@ public class Plateau {
         }
         // retourne un tableau des indices non choisis
         // les cartes qu'on ne veut pas sont remises sous la pile de cartes destination
-        ArrayList<Integer> indicesARetirer = saisieDestination(min);
-        if (indicesARetirer.size() > 0) {
+        saisieDestinationGraphique(min, pioche);
+        /*if (indicesARetirer.size() > 0) {
             for (int indice : indicesARetirer) {
                 pileDestination.add(pioche.remove(indice - 1));
             }
-        }
+        }*/
         return pioche;
     }
 
@@ -733,10 +741,5 @@ public class Plateau {
         return texte;
     }
 
-    public static void main(String[] args) throws Exception {
 
-        MainWindow mainWindow = new MainWindow();
-        Plateau plateau = new Plateau(new String[]{"NomJoueur1", "NomJoueur2", "NomJoueur3"}, new String[]{"rouge", "vert", "bleu"});
-        plateau.run();
-    }
 }
