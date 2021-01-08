@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class Joueur {
     private String nomJoueur;
@@ -48,16 +49,27 @@ public class Joueur {
         this.mainWagon.add(wagon);
     }
 
-    /**
-     * /!\ Ne vérifie pas que les villes sont reliées
-     * Fait le total des cartes destinations pour chaque joueur
-     */
-    public int totalDestJoueurs() {
-        int total = 0;
-        for (Destination dest: mainDest) {
-            total += dest.getValeur();
+    public ArrayList<Route> getRoutes() {
+        ArrayList<Route> copie = new ArrayList<>();
+
+        for (Route route : this.routes) {
+            copie.add(new Route(route));
         }
-        return total;
+        return copie;
+    }
+
+    /**
+     * Vérifie que les villes sont reliées
+     * si c'est le cas on ajoute les points, sinon on les soustraits
+     * Fait le total des cartes destinations pour chaque joueur et l'ajoute à son score
+     */
+    public void totalDestJoueur() {
+        for (Destination dest: mainDest) {
+            if (dest.valide(this))
+                this.score += dest.getValeur();
+            else
+                this.score -= dest.getValeur();
+        }
     }
 
     /**
@@ -163,6 +175,51 @@ public class Joueur {
         }
     }
 
+    /**
+     * teste si les deux UV peuvent être reliées en utilisant les routes de la liste
+     */
+    public boolean UVpeuventEtreReliees(UV a, UV b, ArrayList<Route> routesJoueur){
+        if(routesJoueur.isEmpty())
+            return false;
+
+        // normalement ce cas ne devraient pas être atteint
+        // cependant on le laisse au cas où
+        if (a.equals(b))
+            return true;
+
+        ArrayList<Route> routesLiees = getRoutesUV(a, routesJoueur);
+        ArrayList<Route> routesRestantes = new ArrayList<>();
+        for (Route route: routesJoueur) {
+            if (!routesLiees.contains(route))
+                // ce n'est pas grave si l'on utilise la même route dans toutes les listes
+                routesRestantes.add(route);
+        }
+        for (Route route: routesLiees) {
+            UV autreUV;
+            if (route.getUVA().equals(a))
+                autreUV = route.getUVB();
+            else
+                autreUV = route.getUVA();
+            if (autreUV.equals(b))
+                return true;
+            else
+                return UVpeuventEtreReliees(autreUV,b,routesRestantes);
+        }
+        // normalement ce cas ne devraient pas être atteint
+        // cependant on le laisse pour faciliter le debug avec l'IDE
+        return false;
+    }
+
+    /**
+     * Retourne les routes de la liste qui sont reliées à l'uv
+     */
+    private ArrayList<Route> getRoutesUV(UV uv, ArrayList<Route> routes){
+        ArrayList<Route> tmp = new ArrayList<>();
+        for(Route route : routes)
+            if(route.getUVA().equals(uv) || route.getUVB().equals(uv))
+                tmp.add(route);
+        return tmp;
+    }
     /**
      * Teste si le joueur à moins de 3 pions wagon pour savoir s'il ne reste plus qu'un tour
      * @@return true s'il ne reste plus assez de pions wagons

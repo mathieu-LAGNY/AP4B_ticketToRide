@@ -18,6 +18,10 @@ public class Destination extends Carte {
         return valeur;
     }
 
+    public boolean valide(Joueur joueur) {
+        return joueur.UVpeuventEtreReliees(UVA,UVB,joueur.getRoutes());
+    }
+
     @Override
     public String toString() {
         return UVA + "-" +
