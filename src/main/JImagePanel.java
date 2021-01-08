@@ -1,6 +1,7 @@
+package main;
 import javax.swing.*;
 import java.awt.*;
-package main;
+
 public class JImagePanel extends JPanel {
 
     private Image image = null;
